@@ -1,0 +1,57 @@
+================================================================================
+Comment: End Of Line
+================================================================================
+
+1 // after a line comment, nothing else matters;// 'fda' ...
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (number)
+  (comment))
+
+================================================================================
+Comment: Multiline
+================================================================================
+
+/* As this comment is quite long to be on many lines,
+the symbols slash and star to start the comment
+and star and slash to end the comment are used */
+
+/*
+A proper
+  multiline
+    // comment
+*/
+
+/*
+// A proper
+// multiline
+// comment
+*/
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (comment)
+  (comment))
+
+================================================================================
+Comment: Group Of Comments As Single Comment
+================================================================================
+
+// An improper
+// multiline
+// comment
+// grouped together
+
+// again
+        // but now
+        // indented
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (comment))
