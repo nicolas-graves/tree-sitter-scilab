@@ -1,3 +1,4 @@
+// -*- js-indent-level: 2; -*-
 const PREC = {
   // this resolves a conflict between the usage of ':' in a lambda vs in a
   // typed parameter. In the case of a lambda, we don't allow typed parameters.
