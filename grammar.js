@@ -29,10 +29,11 @@ const PREC = {
 module.exports = grammar({
   name: 'scilab',
   extras: ($) => [/\s/, $.comment, $.line_continuation],
+  conflicts: ($) => [[$._expression, $.assignment]],
   word: ($) => $.identifier,
   rules: {
     source_file: ($) =>
-      repeat(seq($._expression, optional($._end_of_line))),
+      repeat(seq(choice($._expression, $._statement), optional($._end_of_line))),
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
     _end_of_line: ($) => choice(';', '\n', '\r', ','),
@@ -105,6 +106,8 @@ module.exports = grammar({
           /[ij]/
         )
       ),
+
+    _statement: ($) => choice($.assignment),
 
     _expression: ($) => choice(
       $.binary_operator,
@@ -212,5 +215,31 @@ module.exports = grammar({
     row: ($) => prec.right(seq($._expression_sequence, optional(';'))),
     matrix_definition: ($) => seq('[', repeat($.row), ']'),
     cell_definition: ($) => seq('{', repeat($.row), '}'),
+
+    ignored_argument: _ => prec(PREC.not+1, '_'),
+
+    assignment: ($) =>
+      choice(
+        seq(
+          field('variable', $.identifier),
+          '=',
+          field('value', $._expression)
+        ),
+        seq(
+          '[',
+          field(
+            'variable',
+            repeat1(
+              seq(
+                field('argument', choice($.identifier, $.ignored_argument)),
+                optional(',')
+              )
+            )
+          ),
+          ']',
+          '=',
+          field('value', $._expression)
+        )
+      ),
   },
 })
