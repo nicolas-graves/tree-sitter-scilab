@@ -21,12 +21,13 @@ const PREC = {
   power: 21,
   call: 22,
   postfix: 23,
+  line_continuation: 24,
   comments: 25,
 }
 
 module.exports = grammar({
   name: 'scilab',
-  extras: ($) => [/\s/, $.comment],
+  extras: ($) => [/\s/, $.comment, $.line_continuation],
   word: ($) => $.identifier,
   rules: {
     source_file: ($) =>
@@ -133,6 +134,9 @@ module.exports = grammar({
         '/',
       ),
     )))),
+
+    line_continuation: $ => prec(PREC.line_continuation, seq(
+      /\.\.[ ]*/, choice($._end_of_line, $.comment))),
 
     binary_operator: ($) => {
       const table = [
