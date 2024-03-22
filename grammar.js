@@ -1,13 +1,6 @@
 // -*- js-indent-level: 2; -*-
 const PREC = {
-  // this resolves a conflict between the usage of ':' in a lambda vs in a
-  // typed parameter. In the case of a lambda, we don't allow typed parameters.
-  lambda: -2,
-  typed_parameter: -1,
-  conditional: -1,
-
   parenthesized_expression: 1,
-  parenthesized_list_splat: 1,
   or: 10,
   and: 11,
   not: 12,
@@ -114,6 +107,7 @@ module.exports = grammar({
       $.boolean_operator,
       $.cell_definition,
       $.comparison_operator,
+      $.function_call,
       $.identifier,
       $.matrix_definition,
       $.number,
@@ -241,5 +235,15 @@ module.exports = grammar({
           field('value', $._expression)
         )
       ),
+
+    _function_arguments: ($) =>
+      seq(
+        field('argument', $._expression),
+        optional(repeat(seq(',', field('argument', $._expression))))
+      ),
+    _args: ($) => seq(
+      '(', field('arguments', optional($._function_arguments)), ')',),
+    function_call: ($) =>
+      prec.right(PREC.call, seq(field('name', $.identifier), $._args)),
   },
 })
