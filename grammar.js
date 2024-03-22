@@ -220,11 +220,13 @@ module.exports = grammar({
 
     assignment: ($) =>
       choice(
+        // A = B
         seq(
           field('variable', $.identifier),
           '=',
           field('value', $._expression)
         ),
+        // [A, B, _] = C
         seq(
           '[',
           field(
@@ -237,6 +239,12 @@ module.exports = grammar({
             )
           ),
           ']',
+          '=',
+          field('value', $._expression)
+        ),
+        // A(1) = B
+        seq(
+          field('variable', $.function_call),
           '=',
           field('value', $._expression)
         )
