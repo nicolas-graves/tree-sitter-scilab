@@ -118,7 +118,9 @@ module.exports = grammar({
         $.unary_operator
       ),
 
-    parenthesized_expression: ($) => seq('(', $._expression, ')'),
+    parenthesized_expression: ($) =>
+      prec(PREC.parenthesized_expression, seq('(', $._expression, ')')),
+
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     // the repeat part ensure that multiple following // comments are parsed as a single (comment)
