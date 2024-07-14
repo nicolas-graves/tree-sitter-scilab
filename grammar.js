@@ -113,6 +113,7 @@ module.exports = grammar({
       $.number,
       $.parenthesized_expression,
       $.postfix_operator,
+      $.range,
       $.string,
       $.unary_operator
     ),
@@ -259,5 +260,14 @@ module.exports = grammar({
       '(', field('arguments', optional($._function_arguments)), ')',),
     function_call: ($) =>
       prec.right(PREC.call, seq(field('name', $.identifier), $._args)),
+
+    range: ($) => seq(
+      $._range_element,
+      ':',
+      $._range_element,
+      optional(seq(':', $._range_element))
+    ),
+
+    _range_element: ($) => choice($.identifier, $.number, $.function_call),
   },
 })
