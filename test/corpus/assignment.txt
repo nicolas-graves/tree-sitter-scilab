@@ -64,7 +64,5 @@ A(1) = B
   (assignment
     (function_call
       (identifier)
-      (func_call_paren)
-      (number)
-      (func_call_paren))
+      (number))
     (identifier)))

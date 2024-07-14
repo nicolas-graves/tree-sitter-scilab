@@ -8,6 +8,8 @@ ans()
 
 expm(eye(3,3)) * zeros(3,3)
 
+eigs (A)
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -30,4 +32,7 @@ expm(eye(3,3)) * zeros(3,3)
     (function_call
       (identifier)
       (number)
-      (number))))
+      (number)))
+    (function_call
+      (identifier)
+      (identifier)))
