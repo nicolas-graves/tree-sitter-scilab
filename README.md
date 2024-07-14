@@ -28,3 +28,5 @@ endfunction;
 ```
 
 Due to this strong constraint, this repository will be restrainted to a version of Scilab that does not try to parse functions under CLI-style calls.
+
+It seems that the problem doesn't appear in Matlab since `disp + ;` is correct in Matlab and `disp + 2;` isn't (see [this line](https://github.com/acristoffers/tree-sitter-matlab/blob/2825fb578325ac308945318881445a89ea06e0f6/src/scanner.c#L371)), while they are both correct in Scilab.
