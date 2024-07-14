@@ -109,6 +109,7 @@ module.exports = grammar({
       $.assignment,
       $.for_statement,
       $.if_statement,
+      $.select_statement,
       $.while_statement,
     ),
 
@@ -313,6 +314,22 @@ module.exports = grammar({
       field('condition', $._expression),
       $._end_of_line,
       optional($.block),
+      'end',
+    ),
+
+    select_statement: ($) => seq(
+      'select',
+      field('argument', alias($._expression, $.condition)),
+      repeat(
+        seq(
+          'case',
+          alias($._expression, $.condition),
+          optional('then'),
+          $._end_of_line,
+          optional($.block)
+        )
+      ),
+      optional($.else_statement),
       'end',
     ),
   },

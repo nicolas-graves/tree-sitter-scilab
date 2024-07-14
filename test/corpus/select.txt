@@ -1,0 +1,49 @@
+================================================================================
+Select
+================================================================================
+
+select convstr(method)
+  case {'linear','bilinear'}
+    disp('Method is linear')
+  case 'cubic',
+    disp('Method is cubic')
+  case 'nearest' then
+    disp('Method is nearest')
+  else
+    disp('Unknown method.')
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (condition
+      (function_call
+        (identifier)
+        (identifier)))
+    (condition
+      (cell_definition
+        (row
+          (string)
+          (string))))
+    (block
+      (function_call
+        (identifier)
+        (string)))
+    (condition
+      (string))
+    (block
+      (function_call
+        (identifier)
+        (string)))
+    (condition
+      (string))
+    (block
+      (function_call
+        (identifier)
+        (string)))
+    (else_statement
+      (block
+        (function_call
+          (identifier)
+          (string))))))
