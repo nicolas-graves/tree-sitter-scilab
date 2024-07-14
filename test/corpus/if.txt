@@ -71,7 +71,7 @@ if something
 elseif other
     2
 else
-    3
+    return
 end
 
 --------------------------------------------------------------------------------
@@ -153,5 +153,5 @@ end
       (block
         (number)))
     (else_statement
-      (block
-        (number)))))
+     (block
+      (return_statement)))))

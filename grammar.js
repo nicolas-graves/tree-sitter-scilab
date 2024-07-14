@@ -106,6 +106,9 @@ module.exports = grammar({
       ),
 
     _statement: ($) => choice(
+      $.break_statement,
+      $.continue_statement,
+      $.return_statement,
       $.assignment,
       $.for_statement,
       $.if_statement,
@@ -280,6 +283,10 @@ module.exports = grammar({
       $._range_element,
       optional(seq(':', $._range_element))
     ),
+
+    return_statement: _ => 'return',
+    continue_statement: _ => 'continue',
+    break_statement: _ => 'break',
 
     elseif_statement: ($) => seq(
       'elseif',
