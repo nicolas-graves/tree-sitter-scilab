@@ -107,6 +107,7 @@ module.exports = grammar({
       $.assignment,
       $.for_statement,
       $.if_statement,
+      $.while_statement,
     ),
 
     _expression: ($) => choice(
@@ -299,6 +300,14 @@ module.exports = grammar({
     for_statement: ($) => seq(
       'for',
       $.iterator,
+      $._end_of_line,
+      optional($.block),
+      'end',
+    ),
+
+    while_statement: ($) => seq(
+      'while',
+      field('condition', $._expression),
       $._end_of_line,
       optional($.block),
       'end',
