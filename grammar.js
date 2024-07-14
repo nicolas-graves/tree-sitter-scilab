@@ -25,9 +25,12 @@ module.exports = grammar({
   conflicts: ($) => [[$._expression, $.assignment]],
   word: ($) => $.identifier,
   rules: {
-    source_file: ($) =>
-      repeat(seq(choice($._expression, $._statement), optional($._end_of_line))),
+    source_file: ($) => optional($._block),
+
+    _block: ($) =>
+      repeat1(seq(choice($._expression, $._statement), optional($._end_of_line))),
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    block: ($) => $._block,
 
     _end_of_line: ($) => choice(';', '\n', '\r', ','),
 
@@ -100,7 +103,10 @@ module.exports = grammar({
         )
       ),
 
-    _statement: ($) => choice($.assignment),
+    _statement: ($) => choice(
+      $.assignment,
+      $.if_statement
+    ),
 
     _expression: ($) => choice(
       $.binary_operator,
@@ -261,6 +267,7 @@ module.exports = grammar({
     function_call: ($) =>
       prec.right(PREC.call, seq(field('name', $.identifier), $._args)),
 
+    _range_element: ($) => choice($.identifier, $.number, $.function_call),
     range: ($) => seq(
       $._range_element,
       ':',
@@ -268,6 +275,23 @@ module.exports = grammar({
       optional(seq(':', $._range_element))
     ),
 
-    _range_element: ($) => choice($.identifier, $.number, $.function_call),
+    elseif_statement: ($) => seq(
+      'elseif',
+      field('condition', $._expression),
+      optional('then'),
+      $._end_of_line,
+      optional($.block)
+    ),
+    else_statement: ($) => seq('else', optional($.block)),
+    if_statement: ($) => seq(
+      'if',
+      field('condition', $._expression),
+      optional('then'),
+      $._end_of_line,
+      optional($.block),
+      optional($.elseif_statement),
+      optional($.else_statement),
+      'end',
+    ),
   },
 })

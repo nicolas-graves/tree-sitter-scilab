@@ -1,0 +1,157 @@
+================================================================================
+If Statement
+================================================================================
+
+if something
+end
+
+if something,
+end
+
+if something;
+end
+
+if something then
+end
+
+if something then,
+end
+
+if something then;
+end
+
+if something
+    1
+end
+
+if something
+    1
+elseif other
+end
+
+if something
+    1
+elseif other,
+end
+
+if something
+    1
+elseif other;
+end
+
+if something
+    1
+elseif other then
+end
+
+if something
+    1
+elseif other then,
+end
+
+if something
+    1
+elseif other then;
+end
+
+if something
+    1
+elseif other
+    2
+end
+
+if something
+    1
+else
+    2
+end
+
+if something
+    1
+elseif other
+    2
+else
+    3
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_statement
+    (identifier))
+  (if_statement
+    (identifier))
+  (if_statement
+    (identifier))
+  (if_statement
+    (identifier))
+  (if_statement
+    (identifier))
+  (if_statement
+    (identifier))
+  (if_statement
+    (identifier)
+    (block
+      (number)))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)
+      (block
+        (number))))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (else_statement
+      (block
+        (number))))
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)
+      (block
+        (number)))
+    (else_statement
+      (block
+        (number)))))
