@@ -1,0 +1,86 @@
+================================================================================
+For Statement
+================================================================================
+
+for a = 1:2
+end
+
+for b = eye(3)
+    4
+end
+
+for R = 1:N
+    for C = 1:N
+        A(R,C) = 1/(R+C-1);
+    end
+end
+
+for S = 1.0: -0.1: 0.0, do_some_task(S), end
+
+for E = eye(N), do_some_task(E), end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (for_statement
+    (iterator
+      (identifier)
+      (range
+        (number)
+        (number))))
+  (for_statement
+    (iterator
+      (identifier)
+      (function_call
+        (identifier)
+        (number)))
+    (block
+      (number)))
+  (for_statement
+    (iterator
+      (identifier)
+      (range
+        (number)
+        (identifier)))
+    (block
+      (for_statement
+        (iterator
+          (identifier)
+          (range
+            (number)
+            (identifier)))
+        (block
+          (assignment
+            (function_call
+              (identifier)
+              (identifier)
+              (identifier))
+            (binary_operator
+              (number)
+              (parenthesized_expression
+                (binary_operator
+                  (binary_operator
+                    (identifier)
+                    (identifier))
+                  (number)))))))))
+  (for_statement
+    (iterator
+      (identifier)
+      (range
+        (number)
+        (number)
+        (number)))
+    (block
+      (function_call
+        (identifier)
+        (identifier))))
+  (for_statement
+    (iterator
+      (identifier)
+      (function_call
+        (identifier)
+        (identifier)))
+    (block
+      (function_call
+        (identifier)
+        (identifier)))))
