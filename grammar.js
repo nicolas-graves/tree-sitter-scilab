@@ -266,10 +266,19 @@ module.exports = grammar({
         )
       ),
 
+    ranging_operator: ($) => ':',
+
     _function_arguments: ($) =>
       seq(
-        field('argument', $._expression),
-        optional(repeat(seq(',', field('argument', $._expression))))
+        field('argument', choice($.ranging_operator, $._expression)),
+        optional(
+          repeat(
+            seq(
+              ',',
+              field('argument', choice($.ranging_operator, $._expression))
+            )
+          )
+        )
       ),
     _args: ($) => seq(
       '(', field('arguments', optional($._function_arguments)), ')',),
