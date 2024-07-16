@@ -14,6 +14,10 @@ d = [1 2; 3 4] * 2
 
 A(1) = B
 
+a(1).b      = 3
+[a.a a.b]   = meshgrid(1:2, 1:2);
+[a(1) a(2)] = meshgrid(1:1, 1:1);
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -65,4 +69,41 @@ A(1) = B
     (function_call
       (identifier)
       (number))
-    (identifier)))
+    (identifier))
+  (assignment
+    (struct
+      (function_call
+        (identifier)
+        (number))
+      (identifier))
+    (number))
+  (assignment
+    (struct
+      (identifier)
+      (identifier))
+    (struct
+      (identifier)
+      (identifier))
+    (function_call
+      (identifier)
+      (range
+        (number)
+        (number))
+      (range
+        (number)
+        (number))))
+  (assignment
+    (function_call
+      (identifier)
+      (number))
+    (function_call
+      (identifier)
+      (number))
+    (function_call
+      (identifier)
+      (range
+        (number)
+        (number))
+      (range
+        (number)
+        (number)))))

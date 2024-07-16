@@ -130,6 +130,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.range,
       $.string,
+      $.struct,
       $.unary_operator
     ),
 
@@ -238,8 +239,9 @@ module.exports = grammar({
       choice(
         // A = B
         // A(1) = B
+        // A.b = B
         seq(
-          field('variable', choice($.identifier, $.function_call)),
+          field('variable', choice($.identifier, $.function_call, $.struct)),
           '=',
           field('value', $._expression)
         ),
@@ -250,7 +252,15 @@ module.exports = grammar({
             'variable',
             repeat1(
               seq(
-                field('argument', choice($.identifier, $.ignored_argument)),
+                field(
+                  'argument',
+                  choice(
+                    $.identifier,
+                    $.ignored_argument,
+                    $.struct,
+                    $.function_call
+                  )
+                ),
                 optional(',')
               )
             )
@@ -343,5 +353,12 @@ module.exports = grammar({
       optional($.else_statement),
       'end',
     ),
+
+    _struct_element: ($) => choice($.function_call, $.identifier),
+    struct: ($) =>
+      seq(
+        repeat1(seq($._struct_element, '.')),
+        $._struct_element
+      ),
   },
 })
