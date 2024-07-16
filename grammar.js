@@ -237,8 +237,9 @@ module.exports = grammar({
     assignment: ($) =>
       choice(
         // A = B
+        // A(1) = B
         seq(
-          field('variable', $.identifier),
+          field('variable', choice($.identifier, $.function_call)),
           '=',
           field('value', $._expression)
         ),
@@ -258,12 +259,6 @@ module.exports = grammar({
           '=',
           field('value', $._expression)
         ),
-        // A(1) = B
-        seq(
-          field('variable', $.function_call),
-          '=',
-          field('value', $._expression)
-        )
       ),
 
     ranging_operator: ($) => ':',
