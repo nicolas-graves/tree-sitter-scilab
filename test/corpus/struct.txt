@@ -52,9 +52,7 @@ a(1).b = 1
     (struct
       (function_call
         (identifier)
-        (func_call_paren)
-        (number)
-        (func_call_paren))
+        (number))
       (identifier))
     (number)))
 
