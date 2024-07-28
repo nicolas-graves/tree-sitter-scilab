@@ -1,70 +1,137 @@
 ================================================================================
-If Statement
+If Statement: Simple
 ================================================================================
 
 if something
+    1
 end
 
 if something,
+    1
 end
 
 if something;
+    1
 end
 
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_statement
+    (identifier)
+    (block
+      (number)))
+  (if_statement
+    (identifier)
+    (block
+      (number)))
+  (if_statement
+    (identifier)
+    (block
+      (number))))
+
+================================================================================
+If Statement: Then
+================================================================================
+
 if something then
+    1
 end
 
 if something then,
+    1
 end
 
 if something then;
-end
-
-if something
     1
 end
 
-if something
-    1
-elseif other
-end
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_statement
+    (identifier)
+    (block
+      (number)))
+  (if_statement
+    (identifier)
+    (block
+      (number)))
+  (if_statement
+    (identifier)
+    (block
+      (number))))
+
+================================================================================
+If Statement: Else If
+================================================================================
 
 if something
     1
 elseif other,
-end
-
-if something
-    1
-elseif other;
-end
-
-if something
-    1
-elseif other then
-end
-
-if something
-    1
-elseif other then,
-end
-
-if something
-    1
-elseif other then;
-end
-
-if something
-    1
-elseif other
     2
+elseif again;
+    3
+elseif next then
+    4
+elseif again then,
+    5
+elseif last then;
+    6
 end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (elseif_statement
+      (identifier)
+      (block
+        (number)))
+     (elseif_statement
+      (identifier)
+      (block
+        (number)))
+     (elseif_statement
+      (identifier)
+      (block
+        (number)))
+     (elseif_statement
+      (identifier)
+      (block
+        (number)))
+     (elseif_statement
+      (identifier)
+      (block
+        (number)))))
+
+================================================================================
+If Statement: Else
+================================================================================
 
 if something
     1
 else
     2
 end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_statement
+    (identifier)
+    (block
+      (number))
+    (else_statement
+      (block
+        (number)))))
+
+================================================================================
+If Statement: Complete
+================================================================================
 
 if something
     1
@@ -77,73 +144,6 @@ end
 --------------------------------------------------------------------------------
 
 (source_file
-  (if_statement
-    (identifier))
-  (if_statement
-    (identifier))
-  (if_statement
-    (identifier))
-  (if_statement
-    (identifier))
-  (if_statement
-    (identifier))
-  (if_statement
-    (identifier))
-  (if_statement
-    (identifier)
-    (block
-      (number)))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (elseif_statement
-      (identifier)))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (elseif_statement
-      (identifier)))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (elseif_statement
-      (identifier)))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (elseif_statement
-      (identifier)))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (elseif_statement
-      (identifier)))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (elseif_statement
-      (identifier)))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (elseif_statement
-      (identifier)
-      (block
-        (number))))
-  (if_statement
-    (identifier)
-    (block
-      (number))
-    (else_statement
-      (block
-        (number))))
   (if_statement
     (identifier)
     (block

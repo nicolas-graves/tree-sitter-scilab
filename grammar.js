@@ -383,7 +383,7 @@ module.exports = grammar({
       optional('then'),
       $._end_of_line,
       optional($.block),
-      optional($.elseif_statement),
+      repeat($.elseif_statement),
       optional($.else_statement),
       'end',
     ),
