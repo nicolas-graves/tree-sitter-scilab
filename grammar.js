@@ -220,8 +220,75 @@ module.exports = grammar({
       )
     ),
 
-    string: ($) =>
-      choice(seq('"', /([^"]|(""))*/, '"'), seq("'", /([^']|(''))*/, "'")),
+    special_escape_sequence: ($) =>
+      token.immediate(prec(1, seq('\\', choice('\\', 'n', 'r', 't')))),
+
+    // More concise but less straightforward.
+    // formatting_sequence: ($) => token.immediate(prec(1, seq(
+    //     // '%', choice(
+    //       // '%', /(\d+\$)?[-+ #0]*\d*(\.\d+)?[cdeEfgGiosuxX]/
+    //   // )))),
+
+    string: ($) => {
+      const placeholder = seq(/[1-9]+\d*/, '$');
+      const option = choice(
+        '-',  // left align
+        '+',  // sign (+ or -)
+        ' ',  // prefix ' ' if 1st char of signed conversion is not a sign
+        '#',  // convert value to alternate form
+        '0',  // pad with leading zeros
+      );
+      const width = repeat(/\d/);
+      const precision = seq('.', /\d+/);
+      const conversion_character = choice(
+        's', 'c',  // string or boolean
+        'd', 'i',  // to signed int32
+        'u',       // to unsigned uint32
+        'o',       // to unsigned octal
+        'x', 'X',  // to unsigned hexadecimal
+        'f',       // to decimal notation %[\-]ddd.ddd
+        'e', 'E',  // to exponential form %[\-]d.ddde+^-ddd
+        'g', 'G',  // to e, E or f depending on the value
+      );
+      const formatting_opt_sequence = seq(
+        optional(placeholder),
+        repeat(option),
+        optional(width),
+        optional(precision),
+      );
+      const formatting_sequence = token.immediate(prec(1, seq(
+        '%', choice('%', seq(formatting_opt_sequence, conversion_character))
+      )));
+      const neither_formatted_double = seq(
+        '%', formatting_opt_sequence, /[^-0-9$\+ 0#\.cdeEfgGiosuxX%"]/,
+      );
+      const neither_formatted_single = seq(
+        '%', formatting_opt_sequence, /[^-0-9$\+ 0#\.cdeEfgGiosuxX%']/,
+      );
+      return choice(
+        seq(
+          '"',
+          repeat(choice(
+            token.immediate(prec(1, repeat1(choice(
+              /[^\\%"]/, '""', /\\[^nrt\\"]/, neither_formatted_double,
+            )))),
+            $.special_escape_sequence,
+            alias(formatting_sequence, $.formatting_sequence),
+          )),
+          choice('"', '\\"', seq('%', formatting_opt_sequence, '"')),
+        ),
+        seq(
+          "'",
+          repeat(choice(
+            token.immediate(prec(1, repeat1(choice(
+              /[^\\%']/, "''", /\\[^nrt\\']/, neither_formatted_single,
+            )))),
+            $.special_escape_sequence,
+            alias(formatting_sequence, $.formatting_sequence),
+          )),
+          choice("'", "\\'", seq('%', formatting_opt_sequence, "'")),
+        ));
+    },
 
     _expression_sequence: ($) =>
       repeat1(seq(field('argument', $._expression), optional(','))),

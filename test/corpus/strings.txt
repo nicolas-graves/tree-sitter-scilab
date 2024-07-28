@@ -18,3 +18,78 @@ Strings
   (string)
   (string)
   (string))
+================================================================================
+String Formatting and Escaping
+================================================================================
+
+"a string: %s"
+"an integer: %d"
+"an integer: %4d"
+"a left justified integer: %-4d"
+"an integer converted to float: %#fd"
+"an integer with a sign: %+4d"
+"an integer padded with zeros: %04d"
+"an unsigned integer: %u"
+"an unsigned integer: %4u"
+"an integer converted to hexadecimal: %x"
+"a float: %d"
+"a float: %3.2d"
+"a float (exponential form): %3.2e"
+"a float (exponential form): %3.2g"
+"a character: %c"
+"%2$s is %1$d-year old."
+"This %% is a floating number with an f after it %#4.2ff"
+"This\tis\nan\\escaped\tstring\r\n"
+"This\ i\s \a norma\l \string"
+"\"
+"%#4.2b"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence))
+  (string
+    (formatting_sequence)
+    (formatting_sequence))
+  (string
+    (formatting_sequence)
+    (formatting_sequence))
+  (string
+    (special_escape_sequence)
+    (special_escape_sequence)
+    (special_escape_sequence)
+    (special_escape_sequence)
+    (special_escape_sequence)
+    (special_escape_sequence))
+  (string)
+  (string)
+  (string))
