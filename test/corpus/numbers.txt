@@ -25,9 +25,12 @@ Number: Negative Integers
 --------------------------------------------------------------------------------
 
 (source_file
- (number)
- (number)
- (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number)))
 
 ================================================================================
 Number: Positive Float
@@ -58,10 +61,14 @@ Number: Negative Float
 --------------------------------------------------------------------------------
 
 (source_file
- (number)
- (number)
- (number)
- (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number)))
 
 ================================================================================
 Number: Positive Scientific Notation
@@ -92,10 +99,14 @@ Number: Negative Scientific Notation
 --------------------------------------------------------------------------------
 
 (source_file
- (number)
- (number)
- (number)
- (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number)))
 
 ================================================================================
 Number: Positive Complex Number
@@ -135,10 +146,17 @@ Number: Negative Complex Number
 --------------------------------------------------------------------------------
 
 (source_file
- (number)
- (number)
- (number)
- (number)
- (number)
- (number)
- (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number))
+ (unary_operator
+  (number)))

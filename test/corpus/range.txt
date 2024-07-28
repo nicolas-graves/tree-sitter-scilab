@@ -39,20 +39,26 @@ Range: Negative Numbers
 
 (source_file
   (range
-    (number)
+    (unary_operator
+      (number))
     (number))
   (range
     (number)
-    (number)
+    (unary_operator
+      (number))
     (number))
   (range
     (number)
-    (number)
-    (number))
+    (unary_operator
+      (number))
+    (unary_operator
+      (number)))
   (range
     (number)
-    (number)
-    (number)))
+    (unary_operator
+      (number))
+    (unary_operator
+      (number))))
 
 ================================================================================
 Range: Variables

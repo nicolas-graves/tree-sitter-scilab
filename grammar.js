@@ -22,13 +22,19 @@ const PREC = {
 module.exports = grammar({
   name: 'scilab',
   extras: ($) => [/\s/, $.comment, $.line_continuation],
-  conflicts: ($) => [[$._expression, $.assignment]],
+  conflicts: ($) => [
+    [$._expression, $.assignment], // TODO Remove me.
+    [$._expression, $._range_element],
+    [$._expression, $._binary_expression],
+    [$._range_element, $._binary_expression],
+    [$.range],
+  ],
   word: ($) => $.identifier,
   rules: {
     source_file: ($) => optional($._block),
 
     _block: ($) =>
-      repeat1(seq(choice($._expression, $._statement), optional($._end_of_line))),
+      repeat1(seq(choice($._expression, $._statement), $._end_of_line)),
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
     block: ($) => $._block,
 
@@ -64,46 +70,7 @@ module.exports = grammar({
 
     boolean: ($) => choice('%f', '%F', '%t', '%T'),
 
-    number: ($) =>
-      choice(
-        $._integer,
-        $._float,
-        $._float_alt,
-        $._bin_number,
-        $._hex_number,
-        $._sci_number,
-        $._complex_number
-      ),
-    _integer: ($) => /[+-]?\d+/,
-    _float: ($) => /[+-]?\d+\.\d*/,
-    _float_alt: ($) => /[+-]?\.\d+/,
-    _bin_number: ($) => /0[bB][0-1]+/,
-    _hex_number: ($) => /0[xX][\dA-Fa-f]+/,
-    // token does no accept $. so we have to inline
-    _sci_number: ($) =>
-      token(
-        seq(
-          choice(/[+-]?\d+/, /[+-]?\d+\.\d*/, /[+-]?\.\d+/),
-          /[eE][+-]?/,
-          /\d+/
-        )
-      ),
-    _complex_number: ($) =>
-      token(
-        seq(
-          choice(
-            /[+-]?\d+/,
-            /[+-]?\d+\.\d*/,
-            /[+-]?\.\d+/,
-            seq(
-              choice(/[+-]?\d+/, /[+-]?\d+\.\d*/, /[+-]?\.\d+/),
-              /[eE][+-]?/,
-              /\d+/
-            )
-          ),
-          /[ij]/
-        )
-      ),
+    number: ($) => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
 
     _statement: ($) => choice(
       $.break_statement,
@@ -131,12 +98,12 @@ module.exports = grammar({
       $.range,
       $.string,
       $.struct,
-      $.unary_operator
+      $.unary_operator,
+      $.not_operator,
     ),
 
     parenthesized_expression: ($) =>
       prec(PREC.parenthesized_expression, seq('(', $._expression, ')')),
-
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     // the repeat part ensure that multiple following // comments are parsed as a single (comment)
@@ -154,6 +121,24 @@ module.exports = grammar({
       PREC.line_continuation, seq(
         '..', optional('.'), choice($._end_of_line, $.comment)
       )
+    ),
+
+    _binary_expression: ($) => choice(
+      $.binary_operator,
+      $.boolean,
+      $.boolean_operator,
+      $.cell_definition,
+      $.comparison_operator,
+      $.function_call,
+      $.identifier,
+      $.matrix_definition,
+      $.not_operator,
+      $.number,
+      $.parenthesized_expression,
+      $.postfix_operator,
+      $.string,
+      $.struct,
+      $.unary_operator,
     ),
 
     binary_operator: ($) => {
@@ -183,21 +168,55 @@ module.exports = grammar({
           fn(
             precedence,
             seq(
-              field('left', $._expression),
+              field('left', $._binary_expression),
               operator,
-              field('right', $._expression)
+              field('right', $._binary_expression),
             )
           )
         )
       )
     },
 
-    unary_operator: $ => prec(
+    unary_operator: ($) => prec(
       PREC.unary,
       seq(
-        choice('+', '-', '~'),
-        field('argument', $._expression)
-      )
+        choice('+', '-'),
+        field(
+          'argument',
+          choice(
+            $.boolean,
+            $.cell_definition,
+            $.function_call,
+            $.identifier,
+            $.matrix_definition,
+            $.not_operator,
+            $.number,
+            $.parenthesized_expression,
+            $.postfix_operator,
+            $.struct,
+            $.unary_operator,
+          ),
+        ),
+      ),
+    ),
+
+    not_operator: ($) => prec(
+      PREC.not,
+      seq(
+        '~',
+        choice(
+          $.boolean,
+          $.function_call,
+          $.identifier,
+          $.matrix_definition,
+          $.not_operator,
+          $.number,
+          $.parenthesized_expression,
+          $.postfix_operator,
+          $.struct,
+          $.unary_operator,
+        ),
+      ),
     ),
 
     comparison_operator: $ => prec.left(PREC.compare, seq(
@@ -215,9 +234,25 @@ module.exports = grammar({
     postfix_operator: ($) => prec(
       PREC.postfix,
       seq(
-        field('argument', $._expression),
+        field(
+          'argument',
+          choice(
+            $.binary_operator,
+            $.boolean,
+            $.cell_definition,
+            $.function_call,
+            $.identifier,
+            $.matrix_definition,
+            $.number,
+            $.parenthesized_expression,
+            $.postfix_operator,
+            $.string,
+            $.struct,
+            $.unary_operator
+          ),
+        ),
         choice(".'", "'"),
-      )
+      ),
     ),
 
     special_escape_sequence: ($) =>
@@ -357,7 +392,20 @@ module.exports = grammar({
     function_call: ($) =>
       prec.right(PREC.call, seq(field('name', $.identifier), $._args)),
 
-    _range_element: ($) => choice($.identifier, $.number, $.function_call),
+    // Unary operators cannot bind stronger in this case, lest the world falls apart.
+    _range_element: ($) => choice(
+      prec.dynamic(1, $.binary_operator),
+      $.boolean,
+      $.function_call,
+      $.identifier,
+      $.matrix_definition,
+      $.not_operator,
+      $.number,
+      $.parenthesized_expression,
+      $.postfix_operator,
+      $.struct,
+      prec.dynamic(-1, $.unary_operator)
+    ),
     range: ($) => seq(
       $._range_element,
       ':',

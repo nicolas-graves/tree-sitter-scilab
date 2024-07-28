@@ -191,11 +191,13 @@ a & (b | c) & d;
     (identifier))
   (binary_operator
     (binary_operator
-      (number)
+      (unary_operator
+        (number))
       (identifier))
     (identifier))
   (binary_operator
-    (number)
+    (unary_operator
+      (number))
     (parenthesized_expression
       (binary_operator
         (identifier)
@@ -258,7 +260,7 @@ Unary Expressions
 --------------------------------------------------------------------------------
 
 (source_file
-  (unary_operator
+  (not_operator
     (identifier))
   (unary_operator
     (identifier))
@@ -340,7 +342,7 @@ A^2'
 --------------------------------------------------------------------------------
 
 (source_file
-  (unary_operator
+  (not_operator
     (postfix_operator
       (identifier)))
   (unary_operator

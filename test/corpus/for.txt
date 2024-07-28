@@ -65,7 +65,8 @@ for E = eye(N), do_some_task(E), end
       (identifier)
       (range
         (number)
-        (number)
+        (unary_operator
+          (number))
         (number)))
     (block
       (function_call

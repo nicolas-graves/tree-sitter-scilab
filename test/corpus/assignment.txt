@@ -14,7 +14,8 @@ d = 1.5;
     (number))
   (assignment
     (identifier)
-    (number))
+    (unary_operator
+      (number)))
   (assignment
     (identifier)
     (unary_operator
