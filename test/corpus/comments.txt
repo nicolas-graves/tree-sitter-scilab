@@ -3,11 +3,16 @@ Comment: End Of Line
 ================================================================================
 
 1 // after a line comment, nothing else matters;// 'fda' ...
+a = 1 // a comment
 
 --------------------------------------------------------------------------------
 
 (source_file
   (number)
+  (comment)
+  (assignment
+    (identifier)
+    (number))
   (comment))
 
 ================================================================================
@@ -55,3 +60,68 @@ Comment: Group Of Comments As Single Comment
 (source_file
   (comment)
   (comment))
+
+================================================================================
+Comment: Comment Before Statement
+================================================================================
+
+// do something
+a = b
+//
+a(1)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (assignment
+    (identifier)
+    (identifier))
+  (comment)
+  (function_call
+    (identifier)
+    (func_call_paren)
+    (number)
+    (func_call_paren)))
+
+================================================================================
+Comment: Line Continuation
+================================================================================
+
+A = 1 + ... // a comment
+    2
+
+A = [a b; ... // not really necessary
+     c d]
+
+A = "Some " + ... // multiline concatenation
+    "string"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (assignment
+    (identifier)
+    (binary_operator
+      (number)
+      (line_continuation
+        (comment))
+      (number)))
+  (assignment
+    (identifier)
+    (matrix_definition
+      (row
+        (identifier)
+        (identifier))
+      (line_continuation
+        (comment))
+      (row
+        (identifier)
+        (identifier))))
+  (assignment
+    (identifier)
+    (binary_operator
+      (string)
+      (line_continuation
+        (comment))
+      (string))))
