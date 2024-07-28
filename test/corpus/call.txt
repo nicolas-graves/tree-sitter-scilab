@@ -1,16 +1,23 @@
 ================================================================================
-Function call
+Function Call: No Arguments
 ================================================================================
 
-eye(1,2)
+rand()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_call
+    (identifier)))
+
+
+================================================================================
+Function Call: With Arguments
+================================================================================
+
+eye(1, 2)
 inv(A)
-ans()
-
-expm(eye(3,3)) * zeros(3,3)
-
 eigs (A)
-
-disp(:)
 
 --------------------------------------------------------------------------------
 
@@ -23,21 +30,23 @@ disp(:)
     (identifier)
     (identifier))
   (function_call
-    (identifier))
-  (binary_operator
+    (identifier)
+    (identifier)))
+
+================================================================================
+Function Call: Indexing With Spread
+================================================================================
+
+disp(:)
+A(1, :)
+
+--------------------------------------------------------------------------------
+
+(source_file
     (function_call
       (identifier)
-      (function_call
-        (identifier)
-        (number)
-        (number)))
+      (ranging_operator))
     (function_call
       (identifier)
       (number)
-      (number)))
-    (function_call
-      (identifier)
-      (identifier))
-    (function_call
-      (identifier)
       (ranging_operator)))
