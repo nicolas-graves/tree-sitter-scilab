@@ -153,42 +153,30 @@ a & b;
     (identifier)))
 
 ================================================================================
-Binary Expressions
+Binary Expressions: Associativity
 ================================================================================
 
-a & b | c & d;
-a & (b | c) & d;
-
-2 * a + b;
+ 2 * a + b;
+ 2 * (a + b);
 -2 * a + b;
-
--2 * (a + b);
-
-"a" + "b"
+ a ^ 2 + 3
+ a ^ 2 * 3
+ 2 * x ^ 3
 
 --------------------------------------------------------------------------------
 
 (source_file
   (binary_operator
     (binary_operator
-      (identifier)
-      (identifier))
-    (binary_operator
-      (identifier)
-      (identifier)))
-  (binary_operator
-    (binary_operator
-      (identifier)
-      (parenthesized_expression
-        (binary_operator
-          (identifier)
-          (identifier))))
-    (identifier))
-  (binary_operator
-    (binary_operator
       (number)
       (identifier))
     (identifier))
+  (binary_operator
+    (number)
+    (parenthesized_expression
+      (binary_operator
+        (identifier)
+        (identifier))))
   (binary_operator
     (binary_operator
       (unary_operator
@@ -196,15 +184,20 @@ a & (b | c) & d;
       (identifier))
     (identifier))
   (binary_operator
-    (unary_operator
+    (binary_operator
+      (identifier)
       (number))
-    (parenthesized_expression
-      (binary_operator
-        (identifier)
-        (identifier))))
+    (number))
   (binary_operator
-    (string)
-    (string)))
+    (binary_operator
+      (identifier)
+      (number))
+    (number))
+  (binary_operator
+    (number)
+    (binary_operator
+      (identifier)
+      (number))))
 
 ================================================================================
 Boolean Expressions: Simple Expressions
@@ -292,7 +285,7 @@ a <= b
     (identifier)))
 
 ================================================================================
-Comparison Expressions: Composition (FIXME)
+Comparison Expressions: Composition
 ================================================================================
 
 a + b == -c
@@ -307,13 +300,13 @@ a + b == c && d
       (identifier))
     (unary_operator
       (identifier)))
-  (comparison_operator
-    (binary_operator
-      (identifier)
+  (boolean_operator
+    (comparison_operator
+      (binary_operator
+        (identifier)
+        (identifier))
       (identifier))
-    (boolean_operator
-      (identifier)
-      (identifier))))
+    (identifier)))
 
 ================================================================================
 Postfix Expressions: Simple Expressions

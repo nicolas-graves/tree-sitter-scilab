@@ -38,28 +38,32 @@ Assignment: Multiple Output
 
 (source_file
   (assignment
-    (identifier)
-    (identifier)
-    (identifier)
-    (identifier)
+    (multioutput_variable
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier))
     (identifier))
   (assignment
-    (identifier)
-    (identifier)
-    (identifier)
-    (identifier)
+    (multioutput_variable
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier))
     (identifier))
   (assignment
-    (identifier)
-    (ignored_argument)
-    (identifier)
-    (identifier)
+    (multioutput_variable
+      (identifier)
+      (ignored_argument)
+      (identifier)
+      (identifier))
     (identifier))
   (assignment
-    (identifier)
-    (identifier)
-    (ignored_argument)
-    (identifier)
+    (multioutput_variable
+      (identifier)
+      (identifier)
+      (ignored_argument)
+      (identifier))
     (identifier)))
 
 ================================================================================
@@ -119,12 +123,13 @@ Assignment: Multiple Output With Struct
 
 (source_file
   (assignment
-    (struct
-      (identifier)
-      (identifier))
-    (struct
-      (identifier)
-      (identifier))
+    (multioutput_variable
+      (struct
+        (identifier)
+        (identifier))
+      (struct
+        (identifier)
+        (identifier)))
     (function_call
       (identifier)
       (range
@@ -134,16 +139,17 @@ Assignment: Multiple Output With Struct
         (number)
         (number))))
   (assignment
-    (struct
-      (identifier)
-      (function_call
+    (multioutput_variable
+      (struct
         (identifier)
-        (number)))
-    (struct
-      (function_call
-        (identifier)
-        (number))
-      (identifier))
+        (function_call
+          (identifier)
+          (number)))
+      (struct
+        (function_call
+          (identifier)
+          (number))
+        (identifier)))
     (function_call
       (identifier)
       (range
@@ -163,12 +169,13 @@ Assignment: Multiple Output With Indexing
 
 (source_file
   (assignment
-    (function_call
-      (identifier)
-      (number))
-    (function_call
-      (identifier)
-      (number))
+    (multioutput_variable
+      (function_call
+        (identifier)
+        (number))
+      (function_call
+        (identifier)
+        (number)))
     (function_call
       (identifier)
       (range

@@ -12,9 +12,9 @@ const PREC = {
   plus: 18,
   times: 19,
   unary: 20,
-  power: 21,
-  call: 22,
-  postfix: 23,
+  postfix: 21,
+  power: 22,
+  call: 23,
   line_continuation: 24,
   comments: 25,
 }
@@ -23,7 +23,6 @@ module.exports = grammar({
   name: 'scilab',
   extras: ($) => [/\s/, $.comment, $.line_continuation],
   conflicts: ($) => [
-    [$._expression, $.assignment], // TODO Remove me.
     [$._expression, $._range_element],
     [$._expression, $._binary_expression],
     [$._range_element, $._binary_expression],
@@ -83,7 +82,7 @@ module.exports = grammar({
       $.while_statement,
     ),
 
-    _expression: ($) => choice(
+    _expression: ($) => prec.right(choice(
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
@@ -100,7 +99,7 @@ module.exports = grammar({
       $.struct,
       $.unary_operator,
       $.not_operator,
-    ),
+    )),
 
     parenthesized_expression: ($) =>
       prec(PREC.parenthesized_expression, seq('(', $._expression, ')')),
@@ -337,41 +336,40 @@ module.exports = grammar({
 
     ignored_argument: _ => prec(PREC.not+1, '_'),
 
-    assignment: ($) =>
-      choice(
-        // A = B
-        // A(1) = B
-        // A.b = B
-        seq(
-          field('variable', choice($.identifier, $.function_call, $.struct)),
-          '=',
-          field('value', $._expression)
-        ),
-        // [A, B, _] = C
-        seq(
-          '[',
-          field(
-            'variable',
-            repeat1(
-              seq(
-                field(
-                  'argument',
-                  choice(
-                    $.identifier,
-                    $.ignored_argument,
-                    $.struct,
-                    $.function_call
-                  )
-                ),
-                optional(',')
-              )
-            )
-          ),
-          ']',
-          '=',
-          field('value', $._expression)
-        ),
+    // A = B
+    // A(1) = B
+    // A.b = B
+    _variable_assignment: ($) =>
+      seq(
+        field('variable', choice($.identifier, $.function_call, $.struct)),
+        '=',
+        field('value', $._expression)
       ),
+
+    // [A, B, _] = C
+    multioutput_variable: ($) => {
+      const argument = field(
+        'argument',
+        choice(
+          $.identifier,
+          $.ignored_argument,
+          $.struct,
+          $.function_call
+        )
+      );
+      return seq(
+        '[',
+        argument,
+        repeat(seq(choice(',', ' '), argument)),
+        ']',
+      );
+    },
+
+    _multioutput_assignment: ($) =>
+      seq($.multioutput_variable, '=', field('value', $._expression)),
+
+    assignment: ($) =>
+      prec.right(choice($._variable_assignment, $._multioutput_assignment)),
 
     ranging_operator: ($) => ':',
 
@@ -406,11 +404,14 @@ module.exports = grammar({
       $.struct,
       prec.dynamic(-1, $.unary_operator)
     ),
-    range: ($) => seq(
-      $._range_element,
-      ':',
-      $._range_element,
-      optional(seq(':', $._range_element))
+    range: ($) => prec.right(
+      PREC.postfix,
+      seq(
+        $._range_element,
+        ':',
+        $._range_element,
+        optional(seq(':', $._range_element))
+      ),
     ),
 
     return_statement: _ => 'return',
