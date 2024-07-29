@@ -81,6 +81,7 @@ module.exports = grammar({
       $.return_statement,
       $.assignment,
       $.for_statement,
+      $.global_operator,
       $.if_statement,
       $.select_statement,
       $.while_statement,
@@ -474,6 +475,11 @@ module.exports = grammar({
         repeat1(seq($._struct_element, '.')),
         $._struct_element
       ),
+
+    global_operator: ($) => seq(
+      'global',
+      field('arguments', repeat(field('argument', $.identifier)))
+    ),
 
     function_output: ($) => seq(
       field('output', choice($.identifier, $.multioutput_variable)), '='
