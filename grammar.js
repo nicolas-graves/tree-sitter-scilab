@@ -30,7 +30,11 @@ module.exports = grammar({
   ],
   word: ($) => $.identifier,
   rules: {
-    source_file: ($) => optional($._block),
+    source_file: ($) =>
+      choice(
+        seq(optional($._block), repeat($.function_definition)),
+        repeat1($.function_definition)
+      ),
 
     _block: ($) =>
       repeat1(seq(choice($._expression, $._statement), $._end_of_line)),
@@ -373,20 +377,15 @@ module.exports = grammar({
 
     ranging_operator: ($) => ':',
 
-    _function_arguments: ($) =>
-      seq(
-        field('argument', choice($.ranging_operator, $._expression)),
-        optional(
-          repeat(
-            seq(
-              ',',
-              field('argument', choice($.ranging_operator, $._expression))
-            )
-          )
-        )
-      ),
+    _function_arguments: ($) => {
+      const argument = field('argument', choice(
+        $.ranging_operator, $.ignored_argument, $._expression
+      ));
+      return seq(argument, repeat(seq(',', argument)));
+    },
     _args: ($) => seq(
-      '(', field('arguments', optional($._function_arguments)), ')',),
+      '(', field('arguments', optional($._function_arguments)), ')',
+    ),
     function_call: ($) =>
       prec.right(PREC.call, seq(field('name', $.identifier), $._args)),
 
@@ -476,5 +475,21 @@ module.exports = grammar({
         repeat1(seq($._struct_element, '.')),
         $._struct_element
       ),
+
+    function_output: ($) => seq(
+      field('output', choice($.identifier, $.multioutput_variable)), '='
+    ),
+    function_arguments: ($) => seq(
+      '(', field('arguments', optional($._function_arguments)), ')'
+    ),
+    function_definition: ($) => seq(
+      'function',
+      optional($.function_output),
+      field('name', $.identifier),
+      optional($.function_arguments),
+      $._end_of_line,
+      $.block,
+      optional(choice('end', 'endfunction')),
+    ),
   },
 })
