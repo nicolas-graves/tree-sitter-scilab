@@ -38,7 +38,8 @@ end
       (block
         (function_call
           (identifier)
-          (string))))))
+          (function_arguments
+            (string)))))))
 
 ================================================================================
 Select: Multiple Matches
@@ -74,4 +75,5 @@ end
       (block
         (function_call
           (identifier)
-          (string))))))
+          (function_arguments
+            (string)))))))

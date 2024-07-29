@@ -1,0 +1,25 @@
+================================================================================
+Try Statement
+================================================================================
+
+try
+    disp('ok')
+catch
+    disp('not ok')
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (try_statement
+    (block
+      (function_call
+        (identifier)
+        (function_arguments
+          (string))))
+    (catch
+      (block
+      (function_call
+        (identifier)
+        (function_arguments
+          (string)))))))

@@ -84,6 +84,7 @@ module.exports = grammar({
       $.global_operator,
       $.if_statement,
       $.select_statement,
+      $.try_statement,
       $.while_statement,
     ),
 
@@ -495,6 +496,15 @@ module.exports = grammar({
       $._end_of_line,
       $.block,
       optional(choice('end', 'endfunction')),
+    ),
+
+    catch: $ => seq('catch', $._end_of_line, optional($.block)),
+    try_statement: $ => seq(
+      'try',
+      $._end_of_line,
+      optional($.block),
+      optional($.catch),
+      'end',
     ),
   },
 })
