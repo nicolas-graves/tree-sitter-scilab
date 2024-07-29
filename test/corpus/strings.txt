@@ -25,10 +25,10 @@ Strings: Double Quoted
   (string))
 
 ================================================================================
-Strings: Percent Symbol
+Strings: Comment Precedence
 ================================================================================
 
-"This should be a string and % not a comment"
+"This should be a string and // not a comment"
 
 --------------------------------------------------------------------------------
 
