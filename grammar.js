@@ -377,17 +377,16 @@ module.exports = grammar({
 
     ranging_operator: ($) => ':',
 
-    _function_arguments: ($) => {
+    function_arguments: ($) => {
       const argument = field('argument', choice(
         $.ranging_operator, $.ignored_argument, $._expression
       ));
       return seq(argument, repeat(seq(',', argument)));
     },
-    _args: ($) => seq(
-      '(', field('arguments', optional($._function_arguments)), ')',
+    function_call: ($) => prec.right(
+      PREC.call,
+      seq(field('name', $.identifier), $._function_arguments)
     ),
-    function_call: ($) =>
-      prec.right(PREC.call, seq(field('name', $.identifier), $._args)),
 
     // Unary operators cannot bind stronger in this case, lest the world falls apart.
     _range_element: ($) => choice(
@@ -479,14 +478,14 @@ module.exports = grammar({
     function_output: ($) => seq(
       field('output', choice($.identifier, $.multioutput_variable)), '='
     ),
-    function_arguments: ($) => seq(
-      '(', field('arguments', optional($._function_arguments)), ')'
+    _function_arguments: ($) => seq(
+      '(', field('arguments', optional($.function_arguments)), ')'
     ),
     function_definition: ($) => seq(
       'function',
       optional($.function_output),
       field('name', $.identifier),
-      optional($.function_arguments),
+      optional($._function_arguments),
       $._end_of_line,
       $.block,
       optional(choice('end', 'endfunction')),

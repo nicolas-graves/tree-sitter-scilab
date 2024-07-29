@@ -19,7 +19,6 @@ end
       (number)))
   (function_definition
     (identifier)
-    (function_arguments)
     (block
       (number))))
 

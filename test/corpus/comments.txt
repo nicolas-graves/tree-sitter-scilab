@@ -80,7 +80,8 @@ a(1)
   (comment)
   (function_call
     (identifier)
-    (number)))
+    (function_arguments
+      (number))))
 
 ================================================================================
 Comment: Line Continuation

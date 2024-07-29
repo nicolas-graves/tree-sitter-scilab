@@ -74,7 +74,7 @@ which will be used as a snippet in origin."
       (source source)
       (build-system tree-sitter-build-system)
       (arguments (list #:grammar-directories grammar-directories
-                       #:tests? #f)) ;; This line is changed.
+                       #:tests? #t)) ;; This line is changed.
       (inputs inputs)
       (synopsis synopsis)
       (description description)

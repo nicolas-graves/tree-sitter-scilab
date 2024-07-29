@@ -78,7 +78,8 @@ A(1) = B
   (assignment
     (function_call
       (identifier)
-      (number))
+      (function_arguments
+        (number)))
     (identifier)))
 
 ================================================================================
@@ -101,7 +102,8 @@ a.b(2) = 4
     (struct
       (function_call
         (identifier)
-        (number))
+        (function_arguments
+          (number)))
       (identifier))
     (number))
   (assignment
@@ -109,7 +111,8 @@ a.b(2) = 4
       (identifier)
       (function_call
         (identifier)
-        (number)))
+        (function_arguments
+          (number))))
     (number)))
 
 ================================================================================
@@ -132,32 +135,36 @@ Assignment: Multiple Output With Struct
         (identifier)))
     (function_call
       (identifier)
-      (range
-        (number)
-        (number))
-      (range
-        (number)
-        (number))))
+      (function_arguments
+        (range
+          (number)
+          (number))
+        (range
+          (number)
+          (number)))))
   (assignment
     (multioutput_variable
       (struct
         (identifier)
         (function_call
           (identifier)
-          (number)))
+          (function_arguments
+            (number))))
       (struct
         (function_call
           (identifier)
-          (number))
+          (function_arguments
+            (number)))
         (identifier)))
     (function_call
       (identifier)
-      (range
-        (number)
-        (number))
-      (range
-        (number)
-        (number)))))
+      (function_arguments
+        (range
+          (number)
+          (number))
+        (range
+          (number)
+          (number))))))
 
 ================================================================================
 Assignment: Multiple Output With Indexing
@@ -172,15 +179,18 @@ Assignment: Multiple Output With Indexing
     (multioutput_variable
       (function_call
         (identifier)
-        (number))
+        (function_arguments
+          (number)))
       (function_call
         (identifier)
-        (number)))
+        (function_arguments
+          (number))))
     (function_call
       (identifier)
-      (range
-        (number)
-        (number))
-      (range
-        (number)
-        (number)))))
+      (function_arguments
+        (range
+          (number)
+          (number))
+        (range
+          (number)
+          (number))))))

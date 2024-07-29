@@ -71,14 +71,17 @@ for E = eye(N), do_some_task(E), end
     (block
       (function_call
         (identifier)
-        (identifier))))
+        (function_arguments
+          (identifier)))))
   (for_statement
     (iterator
       (identifier)
       (function_call
         (identifier)
-        (identifier)))
+        (function_arguments
+          (identifier))))
     (block
       (function_call
         (identifier)
-        (identifier)))))
+        (function_arguments
+          (identifier))))))

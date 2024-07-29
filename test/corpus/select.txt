@@ -18,19 +18,22 @@ end
     (condition
       (function_call
         (identifier)
-        (identifier)))
+        (function_arguments
+          (identifier))))
     (condition
       (string))
     (block
       (function_call
         (identifier)
-        (string)))
+        (function_arguments
+          (string))))
     (condition
       (number))
     (block
       (function_call
         (identifier)
-        (string)))
+        (function_arguments
+          (string))))
     (else_statement
       (block
         (function_call
@@ -55,7 +58,8 @@ end
     (condition
       (function_call
         (identifier)
-        (identifier)))
+        (function_arguments
+          (identifier))))
     (condition
       (cell_definition
         (row
@@ -64,7 +68,8 @@ end
     (block
       (function_call
         (identifier)
-        (string)))
+        (function_arguments
+          (string))))
     (else_statement
       (block
         (function_call

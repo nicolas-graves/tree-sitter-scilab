@@ -10,11 +10,13 @@ A(1, 2)
 (source_file
   (function_call
     (identifier)
-    (number))
+    (function_arguments
+      (number)))
   (function_call
     (identifier)
-    (number)
-    (number)))
+    (function_arguments
+      (number)
+      (number))))
 
 ================================================================================
 Matrix Indexing: Spread Operator
@@ -28,10 +30,12 @@ A(1:2, :)
 (source_file
   (function_call
     (identifier)
-    (ranging_operator))
+    (function_arguments
+      (ranging_operator)))
   (function_call
     (identifier)
-    (range
-      (number)
-      (number))
-    (ranging_operator)))
+    (function_arguments
+      (range
+        (number)
+        (number))
+      (ranging_operator))))

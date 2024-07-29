@@ -52,7 +52,8 @@ a(1).b = 1
     (struct
       (function_call
         (identifier)
-        (number))
+        (function_arguments
+          (number)))
       (identifier))
     (number)))
 
@@ -70,17 +71,21 @@ a(1).b(1)
   (struct
     (function_call
       (identifier)
-      (number))
+      (function_arguments
+        (number)))
     (identifier))
   (struct
     (identifier)
     (function_call
       (identifier)
-      (number)))
+      (function_arguments
+        (number))))
   (struct
     (function_call
       (identifier)
-      (number))
+      (function_arguments
+        (number)))
     (function_call
       (identifier)
-      (number))))
+      (function_arguments
+        (number)))))
