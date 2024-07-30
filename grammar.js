@@ -486,7 +486,7 @@ module.exports = grammar({
       field('output', choice($.identifier, $.multioutput_variable)), '='
     ),
     _function_arguments: ($) => seq(
-      '(', field('arguments', optional($.function_arguments)), ')'
+      '(', field('arguments', alias(optional($.function_arguments), $.arguments)), ')'
     ),
     function_definition: ($) => seq(
       'function',

@@ -23,16 +23,16 @@ eigs (A)
 (source_file
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (number)
       (number)))
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (identifier)))
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (identifier))))
 
 ================================================================================
@@ -47,10 +47,10 @@ A(1, :)
 (source_file
     (function_call
       (identifier)
-      (function_arguments
+      (arguments
         (ranging_operator)))
     (function_call
       (identifier)
-      (function_arguments
+      (arguments
         (number)
         (ranging_operator))))

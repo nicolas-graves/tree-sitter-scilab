@@ -179,7 +179,7 @@ b():a(1):c()
     (number)
     (function_call
       (identifier)
-      (function_arguments
+      (arguments
         (number)))
     (number))
   (range
@@ -187,7 +187,7 @@ b():a(1):c()
       (identifier))
     (function_call
       (identifier)
-      (function_arguments
+      (arguments
         (number)))
     (function_call
       (identifier))))

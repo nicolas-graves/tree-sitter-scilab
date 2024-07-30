@@ -35,7 +35,7 @@ end
 (source_file
   (function_definition
     (identifier)
-    (function_arguments
+    (arguments
       (identifier))
     (block
       (number))))
@@ -95,7 +95,7 @@ end
         (identifier)
         (identifier)))
     (identifier)
-    (function_arguments
+    (arguments
       (identifier)
       (identifier))
     (block

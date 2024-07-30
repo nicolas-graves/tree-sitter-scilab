@@ -10,11 +10,11 @@ A(1, 2)
 (source_file
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (number)))
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (number)
       (number))))
 
@@ -30,11 +30,11 @@ A(1:2, :)
 (source_file
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (ranging_operator)))
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (range
         (number)
         (number))

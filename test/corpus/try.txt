@@ -15,11 +15,11 @@ end
     (block
       (function_call
         (identifier)
-        (function_arguments
+        (arguments
           (string))))
     (catch
       (block
       (function_call
         (identifier)
-        (function_arguments
+        (arguments
           (string)))))))

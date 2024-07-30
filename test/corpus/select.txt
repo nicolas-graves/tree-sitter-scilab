@@ -17,27 +17,27 @@ end
   (select_statement
     (function_call
       (identifier)
-      (function_arguments
+      (arguments
         (identifier)))
     (case_statement
       (string)
       (block
         (function_call
           (identifier)
-          (function_arguments
+          (arguments
             (string)))))
     (case_statement
       (number)
       (block
         (function_call
           (identifier)
-          (function_arguments
+          (arguments
             (string)))))
     (else_statement
       (block
         (function_call
           (identifier)
-          (function_arguments
+          (arguments
             (string)))))))
 
 ================================================================================
@@ -57,7 +57,7 @@ end
   (select_statement
     (function_call
       (identifier)
-      (function_arguments
+      (arguments
         (identifier)))
     (case_statement
       (cell_definition
@@ -67,11 +67,11 @@ end
       (block
         (function_call
           (identifier)
-          (function_arguments
+          (arguments
             (string)))))
     (else_statement
       (block
         (function_call
           (identifier)
-          (function_arguments
+          (arguments
             (string)))))))

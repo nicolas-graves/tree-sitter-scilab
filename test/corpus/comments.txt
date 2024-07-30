@@ -80,7 +80,7 @@ a(1)
   (comment)
   (function_call
     (identifier)
-    (function_arguments
+    (arguments
       (number))))
 
 ================================================================================
