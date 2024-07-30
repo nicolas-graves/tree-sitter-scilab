@@ -54,3 +54,48 @@ A(1, :)
       (arguments
         (number)
         (ranging_operator))))
+
+================================================================================
+Function Call: Nested Calls
+================================================================================
+
+function y = a(x)
+    y = x
+endfunction
+
+function y = b(u)
+   y = a
+end
+
+b(:)(3)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (function_output
+      (identifier))
+    (identifier)
+    (arguments
+      (identifier))
+    (block
+      (assignment
+        (identifier)
+        (identifier))))
+  (function_definition
+    (function_output
+      (identifier))
+    (identifier)
+    (arguments
+      (identifier))
+    (block
+      (assignment
+        (identifier)
+        (identifier))))
+  (function_call
+    (function_call
+      (identifier)
+      (arguments
+        (ranging_operator)))
+    (arguments
+      (number))))

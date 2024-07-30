@@ -30,14 +30,11 @@ module.exports = grammar({
   ],
   word: ($) => $.identifier,
   rules: {
-    source_file: ($) =>
-      choice(
-        seq(optional($._block), repeat($.function_definition)),
-        repeat1($.function_definition)
-      ),
+    source_file: ($) => repeat(choice($._block, $.function_definition)),
 
-    _block: ($) =>
-      repeat1(seq(choice($._expression, $._statement), $._end_of_line)),
+    _block: ($) => prec.right(
+      repeat1(seq(choice($._expression, $._statement), $._end_of_line))
+    ),
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
     block: ($) => $._block,
 
@@ -385,10 +382,10 @@ module.exports = grammar({
       ));
       return seq(argument, repeat(seq(',', argument)));
     },
-    function_call: ($) => prec.right(
-      PREC.call,
-      seq(field('name', $.identifier), $._function_arguments)
-    ),
+    function_call: ($) => prec.right(PREC.call, seq(
+      field('name', choice($.identifier, $.function_call)),
+      $._function_arguments
+    )),
 
     // Unary operators cannot bind stronger in this case, lest the world falls apart.
     _range_element: ($) => choice(
