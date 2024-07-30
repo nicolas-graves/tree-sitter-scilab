@@ -15,25 +15,24 @@ end
 
 (source_file
   (select_statement
-    (condition
-      (function_call
-        (identifier)
-        (function_arguments
-          (identifier))))
-    (condition
-      (string))
-    (block
-      (function_call
-        (identifier)
-        (function_arguments
-          (string))))
-    (condition
-      (number))
-    (block
-      (function_call
-        (identifier)
-        (function_arguments
-          (string))))
+    (function_call
+      (identifier)
+      (function_arguments
+        (identifier)))
+    (case_statement
+      (string)
+      (block
+        (function_call
+          (identifier)
+          (function_arguments
+            (string)))))
+    (case_statement
+      (number)
+      (block
+        (function_call
+          (identifier)
+          (function_arguments
+            (string)))))
     (else_statement
       (block
         (function_call
@@ -56,21 +55,20 @@ end
 
 (source_file
   (select_statement
-    (condition
-      (function_call
-        (identifier)
-        (function_arguments
-          (identifier))))
-    (condition
+    (function_call
+      (identifier)
+      (function_arguments
+        (identifier)))
+    (case_statement
       (cell_definition
         (row
           (string)
-          (string))))
-    (block
-      (function_call
-        (identifier)
-        (function_arguments
-          (string))))
+          (string)))
+      (block
+        (function_call
+          (identifier)
+          (function_arguments
+            (string)))))
     (else_statement
       (block
         (function_call

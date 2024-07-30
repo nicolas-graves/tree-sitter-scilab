@@ -454,18 +454,18 @@ module.exports = grammar({
       'end',
     ),
 
+    case_statement: ($) => seq(
+      'case',
+      field('condition', $._expression),
+      optional('then'),
+      $._end_of_line,
+      optional($.block)
+    ),
+
     select_statement: ($) => seq(
       'select',
-      field('argument', alias($._expression, $.condition)),
-      repeat(
-        seq(
-          'case',
-          alias($._expression, $.condition),
-          optional('then'),
-          $._end_of_line,
-          optional($.block)
-        )
-      ),
+      field('condition', $._expression),
+      repeat($.case_statement),
       optional($.else_statement),
       'end',
     ),
