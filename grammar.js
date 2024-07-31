@@ -1,6 +1,6 @@
 // -*- js-indent-level: 2; -*-
 const PREC = {
-  parenthesized_expression: 1,
+  parentheses: -1,
   or: 10,
   and: 11,
   not: 12,
@@ -76,8 +76,7 @@ module.exports = grammar({
       $.not_operator,
     )),
 
-    parenthesized_expression: ($) =>
-      prec(PREC.parenthesized_expression, seq('(', $._expression, ')')),
+    parenthesized_expression: ($) => prec(PREC.parentheses, seq('(', $._expression, ')')),
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     // the repeat part ensure that multiple following // comments are parsed as a single (comment)
