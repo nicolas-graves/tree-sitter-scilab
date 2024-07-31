@@ -298,15 +298,15 @@ module.exports = grammar({
         ));
     },
 
-    _expression_sequence: ($) =>
+    row: ($) => prec.right(
       repeat1(seq(field('argument', $._expression), optional(','))),
-    row: ($) =>
-      prec.right(
-        seq($._expression_sequence, optional(choice(';', '\n', '\r')))
-      ),
-
-    matrix_definition: ($) => seq('[', repeat($.row), ']'),
-    cell_definition: ($) => seq('{', repeat($.row), '}'),
+    ),
+    matrix_definition: ($) => seq(
+      '[', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), ']',
+    ),
+    cell_definition: ($) => seq(
+      '{', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), '}',
+    ),
 
     ignored_argument: _ => prec(PREC.not+1, '_'),
 
