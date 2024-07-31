@@ -441,10 +441,7 @@ module.exports = grammar({
       $._struct_element
     ),
 
-    global_operator: $ => seq(
-      'global',
-      field('arguments', repeat(field('argument', $.identifier)))
-    ),
+    global_operator: $ => seq('global', repeat($.identifier)),
 
     function_output: $ => seq(
       field('output', choice($.identifier, $.multioutput_variable)), '='
