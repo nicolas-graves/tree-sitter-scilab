@@ -21,23 +21,23 @@ const PREC = {
 
 module.exports = grammar({
   name: 'scilab',
-  extras: ($) => [/\s/, $.comment, $.line_continuation],
-  conflicts: ($) => [
+  extras: $ => [/\s/, $.comment, $.line_continuation],
+  conflicts: $ => [
     [$._expression, $._range_element],
     [$._expression, $._binary_expression],
     [$._range_element, $._binary_expression],
     [$.range],
   ],
 
-  word: ($) => $.identifier,
+  word: $ => $.identifier,
 
   rules: {
-    source_file: ($) => repeat(choice($._block, $.function_definition)),
+    source_file: $ => repeat(choice($._block, $.function_definition)),
 
-    _block: ($) => prec.right(
+    _block: $ => prec.right(
       repeat1(seq(choice($._expression, $._statement), $._end_of_line))
     ),
-    block: ($) => $._block,
+    block: $ => $._block,
 
     _statement: ($) => choice(
       $.break_statement,
@@ -52,7 +52,7 @@ module.exports = grammar({
       $.while_statement,
     ),
 
-    _expression: ($) => prec.right(choice(
+    _expression: $ => prec.right(choice(
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
@@ -71,7 +71,7 @@ module.exports = grammar({
       $.not_operator,
     )),
 
-    parenthesized_expression: ($) => prec(PREC.parentheses, seq('(', $._expression, ')')),
+    parenthesized_expression: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     // the repeat part ensure that multiple following // comments are parsed as a single (comment)
@@ -91,7 +91,7 @@ module.exports = grammar({
       )
     ),
 
-    _binary_expression: ($) => choice(
+    _binary_expression: $ => choice(
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
@@ -109,7 +109,7 @@ module.exports = grammar({
       $.unary_operator,
     ),
 
-    binary_operator: ($) => {
+    binary_operator: $ => {
       const table = [
         [prec.left, '+', PREC.plus],
         [prec.left, '-', PREC.plus],
@@ -145,7 +145,7 @@ module.exports = grammar({
       )
     },
 
-    unary_operator: ($) => prec(
+    unary_operator: $ => prec(
       PREC.unary,
       seq(
         choice('+', '-'),
@@ -168,7 +168,7 @@ module.exports = grammar({
       ),
     ),
 
-    not_operator: ($) => prec(
+    not_operator: $ => prec(
       PREC.not,
       seq(
         '~',
@@ -191,7 +191,7 @@ module.exports = grammar({
       $._expression, choice('<', '<=', '==', '~=', '>=', '>'), $._expression
     )),
 
-    boolean_operator: ($) => choice(
+    boolean_operator: $ => choice(
       prec.left(PREC.and, seq(
         field('left', $._expression), '&&', field('right', $._expression)
       )),
@@ -199,7 +199,7 @@ module.exports = grammar({
         field('left', $._expression), '||', field('right', $._expression)
       ))),
 
-    postfix_operator: ($) => prec(
+    postfix_operator: $ => prec(
       PREC.postfix,
       seq(
         field(
@@ -223,17 +223,17 @@ module.exports = grammar({
       ),
     ),
 
-    special_escape_sequence: ($) => token.immediate(
+    special_escape_sequence: $ => token.immediate(
       prec(1, seq('\\', choice('\\', 'n', 'r', 't')))
     ),
 
     // More concise but less straightforward.
-    // formatting_sequence: ($) => token.immediate(prec(1, seq(
+    // formatting_sequence: $ => token.immediate(prec(1, seq(
     //     // '%', choice(
     //       // '%', /(\d+\$)?[-+ #0]*\d*(\.\d+)?[cdeEfgGiosuxX]/
     //   // )))),
 
-    string: ($) => {
+    string: $ => {
       const placeholder = seq(/[1-9]+\d*/, '$');
       const option = choice(
         '-',  // left align
@@ -294,13 +294,13 @@ module.exports = grammar({
         ));
     },
 
-    row: ($) => prec.right(
+    row: $ => prec.right(
       repeat1(seq(field('argument', $._expression), optional(','))),
     ),
-    matrix_definition: ($) => seq(
+    matrix_definition: $ => seq(
       '[', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), ']',
     ),
-    cell_definition: ($) => seq(
+    cell_definition: $ => seq(
       '{', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), '}',
     ),
 
@@ -309,14 +309,14 @@ module.exports = grammar({
     // A = B
     // A(1) = B
     // A.b = B
-    _variable_assignment: ($) => seq(
+    _variable_assignment: $ => seq(
       field('variable', choice($.identifier, $.function_call, $.struct)),
       '=',
       field('value', $._expression)
     ),
 
     // [A, B, _] = C
-    multioutput_variable: ($) => {
+    multioutput_variable: $ => {
       const argument = field(
         'argument',
         choice(
@@ -334,29 +334,29 @@ module.exports = grammar({
       );
     },
 
-    _multioutput_assignment: ($) => seq(
+    _multioutput_assignment: $ => seq(
       $.multioutput_variable, '=', field('value', $._expression)
     ),
 
-    assignment: ($) => prec.right(
+    assignment: $ => prec.right(
       choice($._variable_assignment, $._multioutput_assignment)
     ),
 
-    ranging_operator: ($) => ':',
+    ranging_operator: _ => ':',
 
-    function_arguments: ($) => {
+    function_arguments: $ => {
       const argument = field('argument', choice(
         $.ranging_operator, $.ignored_argument, $._expression
       ));
       return seq(argument, repeat(seq(',', argument)));
     },
-    function_call: ($) => prec.right(PREC.call, seq(
+    function_call: $ => prec.right(PREC.call, seq(
       field('name', choice($.identifier, $.function_call)),
       $._function_arguments
     )),
 
     // Unary operators cannot bind stronger in this case, lest the world falls apart.
-    _range_element: ($) => choice(
+    _range_element: $ => choice(
       prec.dynamic(1, $.binary_operator),
       $.boolean,
       $.function_call,
@@ -369,7 +369,7 @@ module.exports = grammar({
       $.struct,
       prec.dynamic(-1, $.unary_operator)
     ),
-    range: ($) => prec.right(
+    range: $ => prec.right(
       PREC.postfix,
       seq(
         $._range_element,
@@ -402,8 +402,8 @@ module.exports = grammar({
       'end',
     ),
 
-    iterator: ($) => seq($.identifier, '=', $._expression),
-    for_statement: ($) => seq(
+    iterator: $ => seq($.identifier, '=', $._expression),
+    for_statement: $ => seq(
       'for',
       $.iterator,
       $._end_of_line,
@@ -411,7 +411,7 @@ module.exports = grammar({
       'end',
     ),
 
-    while_statement: ($) => seq(
+    while_statement: $ => seq(
       'while',
       field('condition', $._expression),
       $._end_of_line,
@@ -419,7 +419,7 @@ module.exports = grammar({
       'end',
     ),
 
-    case_statement: ($) => seq(
+    case_statement: $ => seq(
       'case',
       field('condition', $._expression),
       optional('then'),
@@ -427,7 +427,7 @@ module.exports = grammar({
       optional($.block)
     ),
 
-    select_statement: ($) => seq(
+    select_statement: $ => seq(
       'select',
       field('condition', $._expression),
       repeat($.case_statement),
@@ -435,24 +435,24 @@ module.exports = grammar({
       'end',
     ),
 
-    _struct_element: ($) => choice($.function_call, $.identifier),
-    struct: ($) => seq(
+    _struct_element: $ => choice($.function_call, $.identifier),
+    struct: $ => seq(
       repeat1(seq($._struct_element, '.')),
       $._struct_element
     ),
 
-    global_operator: ($) => seq(
+    global_operator: $ => seq(
       'global',
       field('arguments', repeat(field('argument', $.identifier)))
     ),
 
-    function_output: ($) => seq(
+    function_output: $ => seq(
       field('output', choice($.identifier, $.multioutput_variable)), '='
     ),
-    _function_arguments: ($) => seq(
+    _function_arguments: $ => seq(
       '(', field('arguments', alias(optional($.function_arguments), $.arguments)), ')'
     ),
-    function_definition: ($) => seq(
+    function_definition: $ => seq(
       'function',
       optional($.function_output),
       field('name', $.identifier),
@@ -471,12 +471,12 @@ module.exports = grammar({
       'end',
     ),
 
-    number: ($) => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
+    number: _ => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
 
-    boolean: ($) => choice('%f', '%F', '%t', '%T'),
+    boolean: _ => choice('%f', '%F', '%t', '%T'),
 
-    identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    identifier: _ => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
-    _end_of_line: ($) => choice(';', '\n', '\r', ','),
+    _end_of_line: _ => choice(';', '\n', '\r', ','),
   },
 });
