@@ -28,21 +28,16 @@ module.exports = grammar({
     [$._range_element, $._binary_expression],
     [$.range],
   ],
+
   word: ($) => $.identifier,
+
   rules: {
     source_file: ($) => repeat(choice($._block, $.function_definition)),
 
     _block: ($) => prec.right(
       repeat1(seq(choice($._expression, $._statement), $._end_of_line))
     ),
-    identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
     block: ($) => $._block,
-
-    _end_of_line: ($) => choice(';', '\n', '\r', ','),
-
-    boolean: ($) => choice('%f', '%F', '%t', '%T'),
-
-    number: ($) => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
 
     _statement: ($) => choice(
       $.break_statement,
@@ -475,5 +470,13 @@ module.exports = grammar({
       optional($.catch),
       'end',
     ),
+
+    number: ($) => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
+
+    boolean: ($) => choice('%f', '%F', '%t', '%T'),
+
+    identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+
+    _end_of_line: ($) => choice(';', '\n', '\r', ','),
   },
 });
