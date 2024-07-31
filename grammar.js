@@ -82,7 +82,7 @@ module.exports = grammar({
     // the repeat part ensure that multiple following // comments are parsed as a single (comment)
     comment: _ => token(prec(PREC.comments, (choice(
       seq('//', /(\\+(.|\r?\n)|[^\\\n])*/,
-         repeat(seq(optional(alias(/[\n]{1}[ ]*/,'')), '//', /(\\+(.|\r?\n)|[^\\\n])*/))),
+          repeat(seq(optional(alias(/[\n]{1}[ ]*/,'')), '//', /(\\+(.|\r?\n)|[^\\\n])*/))),
       seq(
         '/*',
         /[^*]*\*+([^/*][^*]*\*+)*/,
@@ -228,8 +228,9 @@ module.exports = grammar({
       ),
     ),
 
-    special_escape_sequence: ($) =>
-      token.immediate(prec(1, seq('\\', choice('\\', 'n', 'r', 't')))),
+    special_escape_sequence: ($) => token.immediate(
+      prec(1, seq('\\', choice('\\', 'n', 'r', 't')))
+    ),
 
     // More concise but less straightforward.
     // formatting_sequence: ($) => token.immediate(prec(1, seq(
@@ -313,12 +314,11 @@ module.exports = grammar({
     // A = B
     // A(1) = B
     // A.b = B
-    _variable_assignment: ($) =>
-      seq(
-        field('variable', choice($.identifier, $.function_call, $.struct)),
-        '=',
-        field('value', $._expression)
-      ),
+    _variable_assignment: ($) => seq(
+      field('variable', choice($.identifier, $.function_call, $.struct)),
+      '=',
+      field('value', $._expression)
+    ),
 
     // [A, B, _] = C
     multioutput_variable: ($) => {
@@ -339,11 +339,13 @@ module.exports = grammar({
       );
     },
 
-    _multioutput_assignment: ($) =>
-      seq($.multioutput_variable, '=', field('value', $._expression)),
+    _multioutput_assignment: ($) => seq(
+      $.multioutput_variable, '=', field('value', $._expression)
+    ),
 
-    assignment: ($) =>
-      prec.right(choice($._variable_assignment, $._multioutput_assignment)),
+    assignment: ($) => prec.right(
+      choice($._variable_assignment, $._multioutput_assignment)
+    ),
 
     ranging_operator: ($) => ':',
 
@@ -439,11 +441,10 @@ module.exports = grammar({
     ),
 
     _struct_element: ($) => choice($.function_call, $.identifier),
-    struct: ($) =>
-      seq(
-        repeat1(seq($._struct_element, '.')),
-        $._struct_element
-      ),
+    struct: ($) => seq(
+      repeat1(seq($._struct_element, '.')),
+      $._struct_element
+    ),
 
     global_operator: ($) => seq(
       'global',
@@ -475,4 +476,4 @@ module.exports = grammar({
       'end',
     ),
   },
-})
+});
