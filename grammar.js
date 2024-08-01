@@ -430,12 +430,12 @@ module.exports = grammar({
       optional(choice('end', 'endfunction')),
     ),
 
-    catch: $ => seq('catch', $._end_of_line, optional($.block)),
+    catch_clause: $ => seq('catch', $._end_of_line, optional($.block)),
     try_statement: $ => seq(
       'try',
       optional($._end_of_line),
       optional($.block),
-      optional($.catch),
+      optional($.catch_clause),
       'end',
     ),
 

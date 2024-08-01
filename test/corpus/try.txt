@@ -17,7 +17,7 @@ end
         (identifier)
         (arguments
           (string))))
-    (catch
+    (catch_clause
       (block
       (function_call
         (identifier)
