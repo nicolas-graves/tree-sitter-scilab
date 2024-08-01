@@ -147,7 +147,7 @@ module.exports = grammar({
       seq(
         choice('+', '-'),
         field(
-          'argument',
+          'operand',
           choice(
             $.boolean,
             $.cell,
@@ -183,7 +183,7 @@ module.exports = grammar({
       PREC.postfix,
       seq(
         field(
-          'argument',
+          'operand',
           choice(
             $.binary_operator,
             $.boolean,
