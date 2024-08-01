@@ -26,6 +26,7 @@ module.exports = grammar({
     [$._expression, $._range_element],
     [$._expression, $._binary_expression],
     [$._range_element, $._binary_expression],
+    [$._expression, $.multioutput_variable],
     [$.range],
   ],
 
@@ -310,7 +311,7 @@ module.exports = grammar({
           $.function_call
         )
       );
-      return seq('[', argument, repeat(seq(optional(','), argument)), ']');
+      return seq('[', repeat(choice(argument, ',')), ']');
     },
 
     ranging_operator: _ => ':',

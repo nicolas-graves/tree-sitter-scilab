@@ -194,3 +194,19 @@ Assignment: Multiple Output With Indexing
         (range
           (number)
           (number))))))
+
+================================================================================
+Assignment: Multiple Output With Extra Delimiters
+================================================================================
+
+[a,,,b] = func();
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (assignment
+    (multioutput_variable
+      (identifier)
+      (identifier))
+      (function_call
+        (identifier))))
