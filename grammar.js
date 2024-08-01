@@ -433,7 +433,7 @@ module.exports = grammar({
     catch: $ => seq('catch', $._end_of_line, optional($.block)),
     try_statement: $ => seq(
       'try',
-      $._end_of_line,
+      optional($._end_of_line),
       optional($.block),
       optional($.catch),
       'end',
