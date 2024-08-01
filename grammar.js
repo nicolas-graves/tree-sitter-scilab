@@ -277,7 +277,7 @@ module.exports = grammar({
       repeat1(seq(field('argument', $._expression), optional(','))),
     ),
     matrix: $ => seq(
-      '[', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), ']',
+      '[', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), ']',
     ),
     cell: $ => seq(
       '{', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), '}',

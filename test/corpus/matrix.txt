@@ -111,3 +111,37 @@ Matrix: Multiline
     (row
       (number)
       (number))))
+
+================================================================================
+Matrix: Extra delimiters
+================================================================================
+
+// Scilab accepts as many ; as you wish.
+[1,2,3,;;;1,2,3]
+[1,2,3,
+
+
+1,2,3]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (matrix
+    (row
+      (number)
+      (number)
+      (number))
+    (row
+      (number)
+      (number)
+      (number)))
+  (matrix
+    (row
+      (number)
+      (number)
+      (number))
+    (row
+      (number)
+      (number)
+      (number))))
