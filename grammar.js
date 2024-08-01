@@ -56,7 +56,7 @@ module.exports = grammar({
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
-      $.cell_definition,
+      $.cell,
       $.comparison_operator,
       $.function_call,
       $.identifier,
@@ -92,7 +92,7 @@ module.exports = grammar({
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
-      $.cell_definition,
+      $.cell,
       $.comparison_operator,
       $.function_call,
       $.identifier,
@@ -150,7 +150,7 @@ module.exports = grammar({
           'argument',
           choice(
             $.boolean,
-            $.cell_definition,
+            $.cell,
             $.function_call,
             $.identifier,
             $.matrix,
@@ -187,7 +187,7 @@ module.exports = grammar({
           choice(
             $.binary_operator,
             $.boolean,
-            $.cell_definition,
+            $.cell,
             $.function_call,
             $.identifier,
             $.matrix,
@@ -280,7 +280,7 @@ module.exports = grammar({
     matrix: $ => seq(
       '[', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), ']',
     ),
-    cell_definition: $ => seq(
+    cell: $ => seq(
       '{', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), '}',
     ),
 

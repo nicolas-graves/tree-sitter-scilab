@@ -60,7 +60,7 @@ end
       (arguments
         (identifier)))
     (case_statement
-      (cell_definition
+      (cell
         (row
           (string)
           (string)))
