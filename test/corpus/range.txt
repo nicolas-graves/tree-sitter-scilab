@@ -83,6 +83,7 @@ Range: Postfix and Unary Operators
 ================================================================================
 
 a':b
+a:b'
 a:-b:c
 a:+b:~c'
 
@@ -93,6 +94,10 @@ a:+b:~c'
     (postfix_operator
       (identifier))
     (identifier))
+  (range
+    (identifier)
+    (postfix_operator
+      (identifier)))
   (range
     (identifier)
     (unary_operator
