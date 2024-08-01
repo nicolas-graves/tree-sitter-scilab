@@ -173,7 +173,7 @@ Binary Expressions: Associativity
     (identifier))
   (binary_operator
     (number)
-    (parenthesized_expression
+    (parenthesis
       (binary_operator
         (identifier)
         (identifier))))

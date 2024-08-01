@@ -63,7 +63,7 @@ module.exports = grammar({
       $.matrix,
       $.not_operator,
       $.number,
-      $.parenthesized_expression,
+      $.parenthesis,
       $.postfix_operator,
       $.range,
       $.string,
@@ -71,7 +71,7 @@ module.exports = grammar({
       $.unary_operator,
     )),
 
-    parenthesized_expression: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
+    parenthesis: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
 
     comment: _ => {
       const single_line_comment = seq('//', /(\\+(.|\r?\n)|[^\\\n])*/);
@@ -99,7 +99,7 @@ module.exports = grammar({
       $.matrix,
       $.not_operator,
       $.number,
-      $.parenthesized_expression,
+      $.parenthesis,
       $.postfix_operator,
       $.string,
       $.struct,
@@ -156,7 +156,7 @@ module.exports = grammar({
             $.matrix,
             $.not_operator,
             $.number,
-            $.parenthesized_expression,
+            $.parenthesis,
             $.postfix_operator,
             $.struct,
             $.unary_operator,
@@ -192,7 +192,7 @@ module.exports = grammar({
             $.identifier,
             $.matrix,
             $.number,
-            $.parenthesized_expression,
+            $.parenthesis,
             $.postfix_operator,
             $.string,
             $.struct,
@@ -336,7 +336,7 @@ module.exports = grammar({
       $.matrix,
       $.not_operator,
       $.number,
-      $.parenthesized_expression,
+      $.parenthesis,
       $.postfix_operator,
       $.struct,
       prec.dynamic(-1, $.unary_operator)

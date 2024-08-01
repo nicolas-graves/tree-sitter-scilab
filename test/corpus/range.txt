@@ -147,19 +147,19 @@ a:(1:2):c
 (source_file
   (range
     (identifier)
-    (parenthesized_expression
+    (parenthesis
       (binary_operator
         (identifier)
         (number))))
   (range
     (identifier)
-    (parenthesized_expression
+    (parenthesis
       (range
         (number)
         (number)))
     (identifier))
   (range
-    (parenthesized_expression
+    (parenthesis
       (binary_operator
         (number)
         (number)))
