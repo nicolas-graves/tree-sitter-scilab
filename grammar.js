@@ -361,12 +361,12 @@ module.exports = grammar({
       $._end_of_line,
       optional($.block)
     ),
-    else_clause: ($) => seq('else', optional($.block)),
+    else_clause: ($) => seq('else', optional($._end_of_line), optional($.block)),
     if_statement: ($) => seq(
       'if',
       field('condition', $._expression),
       optional('then'),
-      $._end_of_line,
+      optional($._end_of_line),
       optional($.block),
       repeat($.elseif_clause),
       optional($.else_clause),
@@ -377,7 +377,7 @@ module.exports = grammar({
     for_statement: $ => seq(
       'for',
       $.iterator,
-      $._end_of_line,
+      optional($._end_of_line),
       optional($.block),
       'end',
     ),
@@ -394,13 +394,14 @@ module.exports = grammar({
       'case',
       field('condition', $._expression),
       optional('then'),
-      $._end_of_line,
-      optional($.block)
+      optional($._end_of_line),
+      optional($.block),
     ),
 
     select_statement: $ => seq(
       'select',
       field('condition', $._expression),
+      $._end_of_line,
       repeat($.case_clause),
       optional($.else_clause),
       'end',

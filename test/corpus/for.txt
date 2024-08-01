@@ -85,3 +85,39 @@ for E = eye(N), do_some_task(E), end
         (identifier)
         (arguments
           (identifier))))))
+
+================================================================================
+For Statement: Inline
+================================================================================
+
+for i = 1:10 1; end
+for i = 1:10, 1; end
+for i = 1:10; 1; end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (for_statement
+    (iterator
+      (identifier)
+      (range
+        (number)
+        (number)))
+    (block
+      (number)))
+  (for_statement
+    (iterator
+      (identifier)
+      (range
+        (number)
+        (number)))
+    (block
+      (number)))
+  (for_statement
+    (iterator
+      (identifier)
+      (range
+        (number)
+        (number)))
+    (block
+      (number))))

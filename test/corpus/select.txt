@@ -75,3 +75,54 @@ end
           (identifier)
           (arguments
             (string)))))))
+
+================================================================================
+Select: Inline
+================================================================================
+
+select i, case 1, func; case 2, func; else func; end
+select i, case 1, func; case 2 then func; else, func; end
+select i; case 1 then func, case 2, case 3; else; func, end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (identifier)
+    (case_clause
+      (number)
+      (block
+        (identifier)))
+    (case_clause
+      (number)
+      (block
+        (identifier)))
+    (else_clause
+      (block
+        (identifier))))
+  (select_statement
+    (identifier)
+    (case_clause
+      (number)
+      (block
+        (identifier)))
+    (case_clause
+      (number)
+      (block
+        (identifier)))
+    (else_clause
+      (block
+        (identifier))))
+  (select_statement
+    (identifier)
+    (case_clause
+      (number)
+      (block
+        (identifier)))
+    (case_clause
+      (number))
+    (case_clause
+      (number))
+    (else_clause
+      (block
+        (identifier)))))

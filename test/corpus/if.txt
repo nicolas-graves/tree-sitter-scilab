@@ -161,19 +161,43 @@ end
 If Statement: Inline
 ================================================================================
 
-if cond, a=1; else a=2; end
+if 1==1, func; else, func; end
+if 1==1 func; else func; end
+if 1==1, func; elseif 2==2, func; else, func; end
 
 --------------------------------------------------------------------------------
 
 (source_file
   (if_statement
-    (identifier)
+    (comparison_operator
+      (number)
+      (number))
     (block
-      (assignment
-        (identifier)
-        (number)))
+      (identifier))
     (else_clause
       (block
-        (assignment
-          (identifier)
-          (number))))))
+        (identifier))))
+  (if_statement
+    (comparison_operator
+      (number)
+      (number))
+    (block
+      (identifier))
+    (else_clause
+      (block
+        (identifier))))
+  (if_statement
+    (comparison_operator
+      (number)
+      (number))
+    (block
+      (identifier))
+    (elseif_clause
+      (comparison_operator
+        (number)
+        (number))
+      (block
+        (identifier)))
+    (else_clause
+      (block
+        (identifier)))))

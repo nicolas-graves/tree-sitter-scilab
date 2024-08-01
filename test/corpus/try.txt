@@ -23,3 +23,50 @@ end
         (identifier)
         (arguments
           (string)))))))
+
+================================================================================
+Try Statement: Without Catch
+================================================================================
+
+try
+    disp('ok')
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (try_statement
+    (block
+      (function_call
+        (identifier)
+        (arguments
+          (string))))))
+
+================================================================================
+Try Statement: Onliners
+================================================================================
+
+try disp('ok'); end
+try, disp('ok'); catch, disp('not ok'); end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (try_statement
+    (block
+      (function_call
+        (identifier)
+        (arguments
+          (string)))))
+  (try_statement
+    (block
+      (function_call
+        (identifier)
+        (arguments
+          (string))))
+    (catch_clause
+      (block
+        (function_call
+        (identifier)
+        (arguments
+          (string)))))))
