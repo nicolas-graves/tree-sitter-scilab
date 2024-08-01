@@ -25,6 +25,8 @@ module.exports = grammar({
   conflicts: $ => [
     [$._base_expression, $._range_element],
     [$._base_expression, $.multioutput_variable],
+    [$._base_expression, $._unary_operand],
+    [$._range_element, $._unary_operand],
     [$.range],
   ],
 
@@ -130,28 +132,22 @@ module.exports = grammar({
       )
     },
 
-    unary_operator: $ => prec(
-      PREC.unary,
-      seq(
-        choice('+', '-'),
-        field(
-          'operand',
-          choice(
-            $.boolean,
-            $.cell,
-            $.function_call,
-            $.identifier,
-            $.matrix,
-            $.not_operator,
-            $.number,
-            $.parenthesis,
-            $.postfix_operator,
-            $.struct,
-            $.unary_operator,
-          ),
-        ),
-      ),
-    ),
+    _unary_operand: $ => field(
+      'operand', choice(
+        $.boolean,
+        $.function_call,
+        $.identifier,
+        $.matrix,
+        $.not_operator,
+        $.number,
+        $.parenthesis,
+        $.postfix_operator,
+        $.struct,
+        $.unary_operator,
+      )),
+    _spaced_unary_operator: $ => prec(PREC.unary, seq(choice('+ ', '- '), $._unary_operand)),
+    _unspaced_unary_operator: $ => prec(PREC.unary+1, seq(choice('+', '-'), $._unary_operand)),
+    unary_operator: $ => choice($._spaced_unary_operator, $._unspaced_unary_operator),
 
     not_operator: $ => prec(PREC.not, seq('~', $._expression)),
 
