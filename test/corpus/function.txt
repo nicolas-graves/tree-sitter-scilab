@@ -122,3 +122,45 @@ end
     (identifier)
     (block
       (number))))
+
+================================================================================
+Function Declaration: Inline Declaration
+================================================================================
+
+function y=sq(x),y=x^2,endfunction
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (function_output
+      (identifier))
+    (identifier)
+    (arguments
+      (identifier))
+    (block
+      (assignment
+        (identifier)
+        (binary_operator
+          (identifier)
+          (number))))))
+
+================================================================================
+Function Declaration: Empty Body
+================================================================================
+
+function A
+end
+
+function B
+    // just a coment
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (identifier))
+  (function_definition
+    (identifier)
+    (comment)))

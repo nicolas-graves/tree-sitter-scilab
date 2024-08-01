@@ -432,8 +432,8 @@ module.exports = grammar({
       field('name', $.identifier),
       optional($._function_arguments),
       $._end_of_line,
-      $.block,
-      optional(choice('end', 'endfunction')),
+      optional($.block),
+      choice('end', 'endfunction'),
     ),
 
     catch_clause: $ => seq('catch', $._end_of_line, optional($.block)),
