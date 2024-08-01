@@ -16,7 +16,7 @@ const PREC = {
   power: 22,
   call: 23,
   line_continuation: 24,
-  comments: 25,
+  comment: 25,
 }
 
 module.exports = grammar({
@@ -73,17 +73,14 @@ module.exports = grammar({
 
     parenthesized_expression: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
 
-    // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    // the repeat part ensure that multiple following // comments are parsed as a single (comment)
-    comment: _ => token(prec(PREC.comments, (choice(
-      seq('//', /(\\+(.|\r?\n)|[^\\\n])*/,
-          repeat(seq(optional(alias(/[\n]{1}[ ]*/,'')), '//', /(\\+(.|\r?\n)|[^\\\n])*/))),
-      seq(
-        '/*',
-        /[^*]*\*+([^/*][^*]*\*+)*/,
-        '/',
-      ),
-    )))),
+    comment: _ => {
+      const single_line_comment = seq('//', /(\\+(.|\r?\n)|[^\\\n])*/);
+      const multi_line_comment = seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/');
+      return token(prec(PREC.comment, choice(
+        seq(repeat(seq(single_line_comment, choice('\n', '\r'), repeat(' '))), single_line_comment),
+        multi_line_comment,
+      )));
+    },
 
     line_continuation: $ => prec(
       PREC.line_continuation, seq(
