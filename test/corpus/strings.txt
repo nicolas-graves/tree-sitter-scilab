@@ -57,6 +57,7 @@ Strings: Formatting
 "%2$s is %1$d-year old."
 "%#4.2b"
 "This %% is a floating number with an f after it %#4.2ff"
+'This %% is a floating number with an f after it %#4.2ff'
 
 --------------------------------------------------------------------------------
 
@@ -95,6 +96,9 @@ Strings: Formatting
     (formatting_sequence)
     (formatting_sequence))
   (string)
+  (string
+    (formatting_sequence)
+    (formatting_sequence))
   (string
     (formatting_sequence)
     (formatting_sequence)))
