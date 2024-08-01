@@ -125,7 +125,7 @@ end
     (identifier)
     (block
       (number))
-    (else_statement
+    (else_clause
       (block
         (number)))))
 
@@ -152,6 +152,6 @@ end
       (identifier)
       (block
         (number)))
-    (else_statement
+    (else_clause
      (block
       (return_statement)))))

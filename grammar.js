@@ -362,7 +362,7 @@ module.exports = grammar({
       $._end_of_line,
       optional($.block)
     ),
-    else_statement: ($) => seq('else', optional($.block)),
+    else_clause: ($) => seq('else', optional($.block)),
     if_statement: ($) => seq(
       'if',
       field('condition', $._expression),
@@ -370,7 +370,7 @@ module.exports = grammar({
       $._end_of_line,
       optional($.block),
       repeat($.elseif_statement),
-      optional($.else_statement),
+      optional($.else_clause),
       'end',
     ),
 
@@ -403,7 +403,7 @@ module.exports = grammar({
       'select',
       field('condition', $._expression),
       repeat($.case_statement),
-      optional($.else_statement),
+      optional($.else_clause),
       'end',
     ),
 
