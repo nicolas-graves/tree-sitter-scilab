@@ -36,7 +36,12 @@ module.exports = grammar({
     source_file: $ => repeat(choice($._block, $.function_definition)),
 
     _block: $ => prec.right(
-      repeat1(seq(choice($._expression, $._statement), $._end_of_line))
+      repeat1(
+        seq(
+          choice($._expression, $._statement, $.function_definition),
+          $._end_of_line
+        )
+      )
     ),
     block: $ => $._block,
 
