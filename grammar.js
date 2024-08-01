@@ -23,10 +23,8 @@ module.exports = grammar({
   name: 'scilab',
   extras: $ => [/\s/, $.comment, $.line_continuation],
   conflicts: $ => [
-    [$._expression, $._range_element],
-    [$._expression, $._binary_expression],
-    [$._range_element, $._binary_expression],
-    [$._expression, $.multioutput_variable],
+    [$._base_expression, $._range_element],
+    [$._base_expression, $.multioutput_variable],
     [$.range],
   ],
 
@@ -58,7 +56,7 @@ module.exports = grammar({
       $.while_statement,
     ),
 
-    _expression: $ => prec.right(choice(
+    _base_expression: $ => choice(
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
@@ -71,11 +69,11 @@ module.exports = grammar({
       $.number,
       $.parenthesis,
       $.postfix_operator,
-      $.range,
       $.string,
       $.struct,
       $.unary_operator,
-    )),
+    ),
+    _expression: $ => choice($._base_expression, $.range),
 
     parenthesis: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
 
@@ -92,24 +90,6 @@ module.exports = grammar({
       PREC.line_continuation, seq(
         '..', optional('.'), choice($._end_of_line, $.comment)
       )
-    ),
-
-    _binary_expression: $ => choice(
-      $.binary_operator,
-      $.boolean,
-      $.boolean_operator,
-      $.cell,
-      $.comparison_operator,
-      $.function_call,
-      $.identifier,
-      $.matrix,
-      $.not_operator,
-      $.number,
-      $.parenthesis,
-      $.postfix_operator,
-      $.string,
-      $.struct,
-      $.unary_operator,
     ),
 
     binary_operator: $ => {
@@ -134,14 +114,16 @@ module.exports = grammar({
         [prec.left, '&', PREC.bitwise_and],
       ]
 
+      const binary_expression = $._base_expression;
+
       return choice(
         ...table.map(([fn, operator, precedence]) =>
           fn(
             precedence,
             seq(
-              field('left', $._binary_expression),
+              field('left', binary_expression),
               operator,
-              field('right', $._binary_expression),
+              field('right', binary_expression),
             )
           )
         )
