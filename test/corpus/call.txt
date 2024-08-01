@@ -36,7 +36,7 @@ eigs (A)
       (identifier))))
 
 ================================================================================
-Function Call: Indexing With Spread
+Function Call: Indexing With Ranging Operator
 ================================================================================
 
 disp(:)
@@ -99,3 +99,22 @@ b(:)(3)
         (ranging_operator)))
     (arguments
       (number))))
+
+================================================================================
+Function Call: Named Arguments
+================================================================================
+
+func(a=1, b=2)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_call
+    (identifier)
+    (arguments
+      (assignment
+        (identifier)
+        (number))
+      (assignment
+        (identifier)
+        (number)))))

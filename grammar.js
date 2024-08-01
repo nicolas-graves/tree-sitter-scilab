@@ -300,6 +300,7 @@ module.exports = grammar({
       );
       return seq(field('left', lhs), '=', field('right', $._expression));
     },
+    _identifier_assignment: $ => seq($.identifier, '=', $._expression),
 
     multioutput_variable: $ => {
       const argument = field(
@@ -318,7 +319,10 @@ module.exports = grammar({
 
     function_arguments: $ => {
       const argument = field('argument', choice(
-        $.ranging_operator, $.ignored_argument, $._expression
+        $.ranging_operator,
+        $.ignored_argument,
+        $._expression,
+        alias($._identifier_assignment, $.assignment),
       ));
       return seq(argument, repeat(seq(',', argument)));
     },
