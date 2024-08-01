@@ -391,7 +391,7 @@ module.exports = grammar({
       'end',
     ),
 
-    case_statement: $ => seq(
+    case_clause: $ => seq(
       'case',
       field('condition', $._expression),
       optional('then'),
@@ -402,7 +402,7 @@ module.exports = grammar({
     select_statement: $ => seq(
       'select',
       field('condition', $._expression),
-      repeat($.case_statement),
+      repeat($.case_clause),
       optional($.else_clause),
       'end',
     ),

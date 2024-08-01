@@ -19,14 +19,14 @@ end
       (identifier)
       (arguments
         (identifier)))
-    (case_statement
+    (case_clause
       (string)
       (block
         (function_call
           (identifier)
           (arguments
             (string)))))
-    (case_statement
+    (case_clause
       (number)
       (block
         (function_call
@@ -59,7 +59,7 @@ end
       (identifier)
       (arguments
         (identifier)))
-    (case_statement
+    (case_clause
       (cell
         (row
           (string)
