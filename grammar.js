@@ -61,6 +61,7 @@ module.exports = grammar({
       $.function_call,
       $.identifier,
       $.matrix,
+      $.not_operator,
       $.number,
       $.parenthesized_expression,
       $.postfix_operator,
@@ -68,7 +69,6 @@ module.exports = grammar({
       $.string,
       $.struct,
       $.unary_operator,
-      $.not_operator,
     )),
 
     parenthesized_expression: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
@@ -165,24 +165,7 @@ module.exports = grammar({
       ),
     ),
 
-    not_operator: $ => prec(
-      PREC.not,
-      seq(
-        '~',
-        choice(
-          $.boolean,
-          $.function_call,
-          $.identifier,
-          $.matrix,
-          $.not_operator,
-          $.number,
-          $.parenthesized_expression,
-          $.postfix_operator,
-          $.struct,
-          $.unary_operator,
-        ),
-      ),
-    ),
+    not_operator: $ => prec(PREC.not, seq('~', $._expression)),
 
     comparison_operator: $ => prec.left(PREC.compare, seq(
       $._expression, choice('<', '<=', '==', '~=', '>=', '>'), $._expression
