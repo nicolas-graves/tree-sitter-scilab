@@ -40,10 +40,10 @@ module.exports = grammar({
     block: $ => $._block,
 
     _statement: ($) => choice(
+      $.assignment,
       $.break_statement,
       $.continue_statement,
       $.return_statement,
-      $.assignment,
       $.for_statement,
       $.global_operator,
       $.if_statement,
@@ -309,13 +309,18 @@ module.exports = grammar({
     // A = B
     // A(1) = B
     // A.b = B
-    _variable_assignment: $ => seq(
-      field('variable', choice($.identifier, $.function_call, $.struct)),
-      '=',
-      field('value', $._expression)
-    ),
-
     // [A, B, _] = C
+    assignment: $ => {
+      const lhs = choice(
+        $.identifier,
+        $.ignored_argument,
+        $.function_call,
+        $.multioutput_variable,
+        $.struct,
+      );
+      return seq(field('left', lhs), '=', field('right', $._expression));
+    },
+
     multioutput_variable: $ => {
       const argument = field(
         'argument',
@@ -326,21 +331,8 @@ module.exports = grammar({
           $.function_call
         )
       );
-      return seq(
-        '[',
-        argument,
-        repeat(seq(choice(',', ' '), argument)),
-        ']',
-      );
+      return seq('[', argument, repeat(seq(optional(','), argument)), ']');
     },
-
-    _multioutput_assignment: $ => seq(
-      $.multioutput_variable, '=', field('value', $._expression)
-    ),
-
-    assignment: $ => prec.right(
-      choice($._variable_assignment, $._multioutput_assignment)
-    ),
 
     ranging_operator: _ => ':',
 
