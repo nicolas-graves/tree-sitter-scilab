@@ -108,7 +108,7 @@ A = "Some " + ... // multiline concatenation
       (number)))
   (assignment
     (identifier)
-    (matrix_definition
+    (matrix
       (row
         (identifier)
         (identifier))

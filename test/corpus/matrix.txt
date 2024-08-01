@@ -8,13 +8,13 @@ Matrix: Simple
 --------------------------------------------------------------------------------
 
 (source_file
-  (matrix_definition
+  (matrix
     (row
       (number)
       (number)
       (number)
       (number)))
-  (matrix_definition
+  (matrix
     (row
       (number)
       (number)
@@ -31,14 +31,14 @@ Matrix: Multidimensional
 --------------------------------------------------------------------------------
 
 (source_file
-  (matrix_definition
+  (matrix
     (row
       (number)
       (number))
     (row
       (number)
       (number)))
-  (matrix_definition
+  (matrix
     (row
       (number)
       (number))
@@ -58,28 +58,28 @@ Matrix: Concatenation
 --------------------------------------------------------------------------------
 
 (source_file
-  (matrix_definition
+  (matrix
     (row
       (binary_operator
         (identifier)
         (binary_operator
           (identifier)
           (identifier)))
-      (matrix_definition
+      (matrix
         (row
           (identifier)
           (identifier))))
     (row
       (identifier)
       (number)))
-  (matrix_definition
+  (matrix
     (row
       (binary_operator
         (identifier)
         (binary_operator
           (identifier)
           (identifier)))
-      (matrix_definition
+      (matrix
         (row
           (identifier)
           (identifier))))
@@ -97,7 +97,7 @@ Matrix: Multiline
 --------------------------------------------------------------------------------
 
 (source_file
-  (matrix_definition
+  (matrix
     (row
       (number)
       (number))
