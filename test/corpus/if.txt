@@ -87,23 +87,23 @@ end
     (identifier)
     (block
       (number))
-    (elseif_statement
+    (elseif_clause
       (identifier)
       (block
         (number)))
-     (elseif_statement
+     (elseif_clause
       (identifier)
       (block
         (number)))
-     (elseif_statement
+     (elseif_clause
       (identifier)
       (block
         (number)))
-     (elseif_statement
+     (elseif_clause
       (identifier)
       (block
         (number)))
-     (elseif_statement
+     (elseif_clause
       (identifier)
       (block
         (number)))))
@@ -148,7 +148,7 @@ end
     (identifier)
     (block
       (number))
-    (elseif_statement
+    (elseif_clause
       (identifier)
       (block
         (number)))

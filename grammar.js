@@ -355,7 +355,7 @@ module.exports = grammar({
     continue_statement: _ => 'continue',
     break_statement: _ => 'break',
 
-    elseif_statement: ($) => seq(
+    elseif_clause: ($) => seq(
       'elseif',
       field('condition', $._expression),
       optional('then'),
@@ -369,7 +369,7 @@ module.exports = grammar({
       optional('then'),
       $._end_of_line,
       optional($.block),
-      repeat($.elseif_statement),
+      repeat($.elseif_clause),
       optional($.else_clause),
       'end',
     ),
