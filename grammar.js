@@ -194,7 +194,6 @@ module.exports = grammar({
             $.number,
             $.parenthesis,
             $.postfix_operator,
-            $.string,
             $.struct,
             $.unary_operator
           ),
