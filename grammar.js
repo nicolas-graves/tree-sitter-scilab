@@ -280,7 +280,7 @@ module.exports = grammar({
       '[', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), ']',
     ),
     cell: $ => seq(
-      '{', repeat(seq($.row, choice(';', '\n', '\r'))), optional($.row), '}',
+      '{', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), '}',
     ),
 
     ignored_argument: _ => prec(PREC.not+1, '_'),

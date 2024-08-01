@@ -61,3 +61,37 @@ Cell: Multidimensional
       (cell
       (row
         (number))))))
+
+================================================================================
+Cell: Extra delimiters
+================================================================================
+
+// Scilab accepts as many ; as you wish.
+{1,2,3,;;;1,2,3}
+{1,2,3,
+
+
+1,2,3}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (cell
+    (row
+      (number)
+      (number)
+      (number))
+    (row
+      (number)
+      (number)
+      (number)))
+  (cell
+    (row
+      (number)
+      (number)
+      (number))
+    (row
+      (number)
+      (number)
+      (number))))
