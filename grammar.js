@@ -9,14 +9,15 @@ const PREC = {
   bitwise_and: 15,
   xor: 16,
   shift: 17,
-  plus: 18,
-  times: 19,
-  unary: 20,
-  postfix: 21,
-  power: 22,
-  call: 23,
-  line_continuation: 24,
-  comment: 25,
+  spaced_unary: 18,
+  plus: 19,
+  times: 20,
+  unspaced_unary: 21,
+  postfix: 22,
+  power: 23,
+  call: 24,
+  line_continuation: 25,
+  comment: 26,
 }
 
 module.exports = grammar({
@@ -73,7 +74,8 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      $.unary_operator,
+      $._spaced_unary_operator,
+      $._unspaced_unary_operator,
     ),
     _expression: $ => choice($._base_expression, $.range),
 
@@ -143,11 +145,23 @@ module.exports = grammar({
         $.parenthesis,
         $.postfix_operator,
         $.struct,
-        $.unary_operator,
+        $._spaced_unary_operator,
+        $._unspaced_unary_operator,
       )),
-    _spaced_unary_operator: $ => prec(PREC.unary, seq(choice('+ ', '- '), $._unary_operand)),
-    _unspaced_unary_operator: $ => prec(PREC.unary+1, seq(choice('+', '-'), $._unary_operand)),
-    unary_operator: $ => choice($._spaced_unary_operator, $._unspaced_unary_operator),
+    _unprec_spaced_unary_operator: $ => prec(
+      PREC.unspaced_unary+1, seq(choice('+ ', '- '), $._unary_operand)
+    ),
+    _unprec_unspaced_unary_operator: $ => prec(
+      PREC.unspaced_unary, seq(choice('+', '-'), $._unary_operand),
+    ),
+    _spaced_unary_operator: $ => alias(
+      prec(PREC.spaced_unary, $._unprec_spaced_unary_operator),
+      $.unary_operator,
+    ),
+    _unspaced_unary_operator: $ => alias(
+      prec(PREC.unspaced_unary, $._unprec_unspaced_unary_operator),
+      $.unary_operator,
+    ),
 
     not_operator: $ => prec(PREC.not, seq('~', $._base_expression)),
 
@@ -179,7 +193,7 @@ module.exports = grammar({
             $.parenthesis,
             $.postfix_operator,
             $.struct,
-            $.unary_operator
+            $._unspaced_unary_operator,
           ),
         ),
         choice(".'", "'"),
@@ -314,9 +328,8 @@ module.exports = grammar({
       $._function_arguments
     )),
 
-    // Unary operators cannot bind stronger in this case, lest the world falls apart.
     _range_element: $ => choice(
-      prec.dynamic(1, $.binary_operator),
+      $.binary_operator,
       $.boolean,
       $.function_call,
       $.identifier,
@@ -327,7 +340,8 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      prec.dynamic(-1, $.unary_operator)
+      $._spaced_unary_operator,
+      $._unspaced_unary_operator,
     ),
     range: $ => prec.right(
       PREC.postfix,
