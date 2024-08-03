@@ -271,9 +271,11 @@ module.exports = grammar({
         ));
     },
 
-    row: $ => prec.right(
-      repeat1(seq(field('argument', $._expression), optional(','))),
-    ),
+    row: $ => {
+      const delimiter = choice(',', ' ');
+      const argument = field('argument', $._expression);
+      return seq(repeat(seq(argument, repeat1(delimiter))), argument, optional(delimiter));
+    },
     matrix: $ => seq(
       '[', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), ']',
     ),
