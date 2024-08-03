@@ -73,7 +73,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      $.unary_operator,
+      $._unary_operator,
     ),
     _expression: $ => choice($._base_expression, $.range),
 
@@ -143,9 +143,24 @@ module.exports = grammar({
         $.parenthesis,
         $.postfix_operator,
         $.struct,
-        $.unary_operator,
+        $._unary_operator,
       )),
-    unary_operator: $ => prec(PREC.unary, seq(choice('+', '-'), $._unary_operand)),
+    // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
+    _unprec_spaced_unary_operator: $ => prec(
+      PREC.unary+1, seq(choice('+ ', '- '), $._unary_operand)
+    ),
+    _unprec_unspaced_unary_operator: $ => prec(
+      PREC.unary, seq(choice('+', '-'), $._unary_operand)
+    ),
+    _spaced_unary_operator: $ => alias(
+      prec(PREC.unary, $._unprec_spaced_unary_operator),
+      $.unary_operator,
+    ),
+    _unspaced_unary_operator: $ => alias(
+      prec(PREC.unary, $._unprec_unspaced_unary_operator),
+      $.unary_operator,
+    ),
+    _unary_operator: $ => choice($._spaced_unary_operator, $._unspaced_unary_operator),
 
     not_operator: $ => prec(PREC.not, seq('~', $._base_expression)),
 
@@ -177,7 +192,7 @@ module.exports = grammar({
             $.parenthesis,
             $.postfix_operator,
             $.struct,
-            $.unary_operator,
+            $._unary_operator,
           ),
         ),
         choice(".'", "'"),
@@ -257,10 +272,14 @@ module.exports = grammar({
 
     // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
     _binary_operator_rather_than_consecutive_unary_operators: $ => prec(
-      PREC.unary, seq(
-        field('left', $.unary_operator),
+      PREC.unary+1, seq(
+        // choice('+', '-'),
+        // repeat1(' '),
+        field('left', $._unary_operand),
         repeat1(' '),
-        field('right', seq(choice('+ ', '- '), $._unary_operand)),
+        choice('+', '-'),
+        repeat1(' '),
+        field('right', $._unary_operand),
       ),
     ),
     row: $ => {
@@ -337,7 +356,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      $.unary_operator,
+      $._unary_operator,
     ),
     range: $ => prec.right(
       PREC.postfix,
