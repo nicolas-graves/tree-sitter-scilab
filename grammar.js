@@ -23,7 +23,11 @@ module.exports = grammar({
   conflicts: $ => [
     [$._binary_operand, $._range_element],
     [$._binary_operand, $.multioutput_variable],
+    [$._binary_operand, $._unary_operand],
+    [$._range_element, $._unary_operand],
+    [$._unary_operand, $.multioutput_variable],
     [$.range],
+    [$._expression, $._additive_spaced_binary_operator],
   ],
 
   word: $ => $.identifier,
@@ -115,9 +119,9 @@ module.exports = grammar({
           fn(
             precedence,
             seq(
-              field('left', binary_expression),
+              field('left', $._binary_operand),
               operator,
-              field('right', binary_expression),
+              field('right', $._binary_operand),
             )
           )
         )
@@ -138,7 +142,6 @@ module.exports = grammar({
         $.unary_operator,
       )),
     unary_operator: $ => prec(PREC.unary, seq(choice('+', '-'), $._unary_operand)),
-
     not_operator: $ => prec(PREC.not, seq('~', $._unary_operand)),
 
     comparison_operator: $ => prec.left(PREC.compare, seq(
@@ -230,15 +233,27 @@ module.exports = grammar({
         ));
     },
 
-    row: $ => prec.right(
-      repeat1(seq(field('argument', $._expression), optional(','))),
+    // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
+    _additive_spaced_binary_operator: $ => seq(
+      field('left', $._binary_operand),
+      repeat1(' '), choice('+', '-'), repeat1(' '),
+      field('right', $._binary_operand),
     ),
-    matrix: $ => seq(
-      '[', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), ']',
-    ),
-    cell: $ => seq(
-      '{', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), '}',
-    ),
+    row: $ => {
+      const sep = choice(',', ' ');
+      const argument = field('argument', choice($._expression, alias(
+        $._additive_spaced_binary_operator, $.binary_operator
+      )));
+      return seq(repeat(seq(argument, sep)), argument, optional(sep));
+    },
+    matrix: $ => {
+      const end_of_row = token.immediate(repeat1(choice(';', '\n', '\r')));
+      return seq('[', repeat(seq($.row, end_of_row)), optional($.row), ']',);
+    },
+    cell: $ => {
+      const end_of_row = token.immediate(repeat1(choice(';', '\n', '\r')));
+      return seq('{', repeat(seq($.row, end_of_row)), optional($.row), '}');
+    },
 
     ignored_argument: _ => prec(PREC.not+1, '_'),
 

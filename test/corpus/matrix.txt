@@ -145,3 +145,59 @@ Matrix: Extra delimiters
       (number)
       (number)
       (number))))
+
+================================================================================
+Matrix: Expression With Transpose
+================================================================================
+
+[2*A' + 5+B' D'-3'
+ 3 4]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (matrix
+    (row
+      (binary_operator
+        (binary_operator
+          (binary_operator
+            (number)
+            (postfix_operator
+              (identifier)))
+          (number))
+        (postfix_operator
+          (identifier)))
+      (binary_operator
+        (postfix_operator
+          (identifier))
+        (postfix_operator
+          (number))))
+    (row
+      (number)
+      (number))))
+
+================================================================================
+Matrix: Meaning of Spaces
+================================================================================
+
+[-  1 1+1 +1 - 2 -2 3+ 4]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (matrix
+    (row
+      (unary_operator
+        (number))
+      (binary_operator
+        (number)
+        (number))
+      (binary_operator
+        (unary_operator
+          (number))
+        (number))
+      (unary_operator
+        (number))
+      (binary_operator
+        (number)
+        (number)))))
