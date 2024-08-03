@@ -11,13 +11,12 @@ const PREC = {
   shift: 17,
   plus: 18,
   times: 19,
-  spaced_unary: 20,
-  unspaced_unary: 21,
-  postfix: 22,
-  power: 23,
-  call: 24,
-  line_continuation: 25,
-  comment: 26,
+  unary: 20,
+  postfix: 21,
+  power: 22,
+  call: 23,
+  line_continuation: 24,
+  comment: 25,
 }
 
 module.exports = grammar({
@@ -74,8 +73,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      $._spaced_unary_operator,
-      $._unspaced_unary_operator,
+      $.unary_operator,
     ),
     _expression: $ => choice($._base_expression, $.range),
 
@@ -145,23 +143,9 @@ module.exports = grammar({
         $.parenthesis,
         $.postfix_operator,
         $.struct,
-        $._spaced_unary_operator,
-        $._unspaced_unary_operator,
+        $.unary_operator,
       )),
-    _unprec_spaced_unary_operator: $ => prec(
-      PREC.unspaced_unary+1, seq(choice('+ ', '- '), $._unary_operand)
-    ),
-    _unprec_unspaced_unary_operator: $ => prec(
-      PREC.unspaced_unary, seq(choice('+', '-'), $._unary_operand),
-    ),
-    _spaced_unary_operator: $ => alias(
-      prec(PREC.spaced_unary, $._unprec_spaced_unary_operator),
-      $.unary_operator,
-    ),
-    _unspaced_unary_operator: $ => alias(
-      prec(PREC.unspaced_unary, $._unprec_unspaced_unary_operator),
-      $.unary_operator,
-    ),
+    unary_operator: $ => prec(PREC.unary, seq(choice('+', '-'), $._unary_operand)),
 
     not_operator: $ => prec(PREC.not, seq('~', $._base_expression)),
 
@@ -193,7 +177,7 @@ module.exports = grammar({
             $.parenthesis,
             $.postfix_operator,
             $.struct,
-            $._unspaced_unary_operator,
+            $.unary_operator,
           ),
         ),
         choice(".'", "'"),
@@ -273,8 +257,8 @@ module.exports = grammar({
 
     // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
     _binary_operator_rather_than_consecutive_unary_operators: $ => prec(
-      PREC.unspaced_unary, seq(
-        field('left', choice($._spaced_unary_operator, $._unspaced_unary_operator)),
+      PREC.unary, seq(
+        field('left', $.unary_operator),
         repeat1(' '),
         field('right', seq(choice('+ ', '- '), $._unary_operand)),
       ),
@@ -352,8 +336,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      $._spaced_unary_operator,
-      $._unspaced_unary_operator,
+      $.unary_operator,
     ),
     range: $ => prec.right(
       PREC.postfix,
