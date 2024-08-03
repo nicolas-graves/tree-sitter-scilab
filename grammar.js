@@ -268,6 +268,7 @@ module.exports = grammar({
       const argument = field('argument', choice($._expression, alias(
         $._binary_operator_rather_than_consecutive_unary_operators, $.binary_operator
       )));
+      // return repeat1(seq(argument, optional(',')));
       return seq(repeat(seq(argument, delimiter)), argument, optional(delimiter));
     },
     matrix: $ => seq(
