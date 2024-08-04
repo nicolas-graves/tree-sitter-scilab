@@ -290,12 +290,14 @@ module.exports = grammar({
       // return repeat1(seq(argument, optional(',')));
       return seq(repeat(seq(argument, delimiter)), argument, optional(delimiter));
     },
-    matrix: $ => seq(
-      '[', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), ']',
-    ),
-    cell: $ => seq(
-      '{', repeat(seq($.row, repeat1(choice(';', '\n', '\r')))), optional($.row), '}',
-    ),
+    matrix: $ => {
+      const end_of_row = token.immediate(repeat1(choice(';', '\n', '\r')));
+      return seq('[', repeat(seq($.row, end_of_row)), optional($.row), ']',);
+    },
+    cell: $ => {
+      const end_of_row = token.immediate(repeat1(choice(';', '\n', '\r')));
+      return seq('{', repeat(seq($.row, end_of_row)), optional($.row), '}');
+    },
 
     ignored_argument: _ => prec(PREC.not+1, '_'),
 
