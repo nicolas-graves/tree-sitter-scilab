@@ -7,8 +7,6 @@ const PREC = {
   compare: 13,
   bitwise_or: 14,
   bitwise_and: 15,
-  xor: 16,
-  shift: 17,
   plus: 18,
   times: 19,
   unary: 20,
