@@ -154,28 +154,10 @@ module.exports = grammar({
       ))
     ),
 
-    postfix_operator: $ => prec(
-      PREC.postfix,
-      seq(
-        field(
-          'operand',
-          choice(
-            $.binary_operator,
-            $.boolean,
-            $.cell,
-            $.function_call,
-            $.identifier,
-            $.matrix,
-            $.number,
-            $.parenthesis,
-            $.postfix_operator,
-            $.struct,
-            $.unary_operator
-          ),
-        ),
-        choice(".'", "'"),
-      ),
-    ),
+    postfix_operator: $ => prec(PREC.postfix, seq(
+      field('operand', choice($.cell, $._unary_operand)),
+      choice(".'", "'"),
+    )),
 
     special_escape_sequence: $ => token.immediate(
       prec(1, seq('\\', choice('\\', 'n', 'r', 't')))
