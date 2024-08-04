@@ -94,10 +94,14 @@ module.exports = grammar({
       )
     ),
 
-    binary_operator: $ => {
+    _additive_binary_operator: $ => prec.left(PREC.plus, seq(
+      field('left', $._base_expression),
+      choice('+', '-'),
+      field('right', $._base_expression),
+    )),
+
+    _binary_operator: $ => {
       const table = [
-        [prec.left, '+', PREC.plus],
-        [prec.left, '-', PREC.plus],
         [prec.left, '*', PREC.times],
         [prec.left, '.*', PREC.times],
         [prec.left, '.*.', PREC.times],
@@ -116,21 +120,21 @@ module.exports = grammar({
         [prec.left, '&', PREC.bitwise_and],
       ]
 
-      const binary_expression = $._base_expression;
-
       return choice(
         ...table.map(([fn, operator, precedence]) =>
           fn(
             precedence,
             seq(
-              field('left', binary_expression),
+              field('left', $._base_expression),
               operator,
-              field('right', binary_expression),
+              field('right', $._base_expression),
             )
           )
         )
       )
     },
+
+    binary_operator: $ => choice($._additive_binary_operator, $._binary_operator),
 
     _unary_operand: $ => field(
       'operand', choice(
