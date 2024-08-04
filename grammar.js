@@ -165,22 +165,7 @@ module.exports = grammar({
     postfix_operator: $ => prec(
       PREC.postfix,
       seq(
-        field(
-          'operand',
-          choice(
-            $.binary_operator,
-            $.boolean,
-            $.cell,
-            $.function_call,
-            $.identifier,
-            $.matrix,
-            $.number,
-            $.parenthesis,
-            $.postfix_operator,
-            $.struct,
-            $._unary_operator,
-          ),
-        ),
+        field('operand', choice($.cell, $._unary_operand)),
         choice(".'", "'"),
       ),
     ),
