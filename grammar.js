@@ -271,10 +271,10 @@ module.exports = grammar({
     },
 
     // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
-    _binary_operator_rather_than_consecutive_unary_operators: $ => prec(
+    _consecutive_unary_operators: $ => prec(
       PREC.unary+1, seq(
         // choice('+', '-'),
-        // repeat1(' '),
+        // repeat(' '),
         field('left', $._unary_operand),
         repeat1(' '),
         choice('+', '-'),
@@ -285,7 +285,7 @@ module.exports = grammar({
     row: $ => {
       const delimiter = choice(',', ' ');
       const argument = field('argument', choice($._expression, alias(
-        $._binary_operator_rather_than_consecutive_unary_operators, $.binary_operator
+        $._consecutive_unary_operators, $.binary_operator
       )));
       // return repeat1(seq(argument, optional(',')));
       return seq(repeat(seq(argument, delimiter)), argument, optional(delimiter));
