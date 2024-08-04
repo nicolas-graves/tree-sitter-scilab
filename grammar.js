@@ -164,7 +164,7 @@ module.exports = grammar({
     ),
     _unary_operator: $ => choice($._spaced_unary_operator, $._unspaced_unary_operator),
 
-    not_operator: $ => prec(PREC.not, seq('~', $._base_expression)),
+    not_operator: $ => prec(PREC.not, seq('~', $._unary_operand)),
 
     comparison_operator: $ => prec.left(PREC.compare, seq(
       $._expression, choice('<', '<=', '==', '~=', '>=', '>'), $._expression
