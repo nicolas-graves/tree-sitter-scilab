@@ -71,7 +71,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      $._unary_operator,
+      $.unary_operator,
     ),
     _expression: $ => choice($._base_expression, $.range),
 
@@ -145,25 +145,9 @@ module.exports = grammar({
         $.parenthesis,
         $.postfix_operator,
         $.struct,
-        $._unary_operator,
+        $.unary_operator,
       )),
-    // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
-    _unprec_spaced_unary_operator: $ => prec(
-      PREC.unary+1, seq(choice('+ ', '- '), $._unary_operand)
-    ),
-    _unprec_unspaced_unary_operator: $ => prec(
-      PREC.unary, seq(choice('+', '-'), $._unary_operand)
-    ),
-    _spaced_unary_operator: $ => alias(
-      prec(PREC.unary, $._unprec_spaced_unary_operator),
-      $.unary_operator,
-    ),
-    _unspaced_unary_operator: $ => alias(
-      prec(PREC.unary, $._unprec_unspaced_unary_operator),
-      $.unary_operator,
-    ),
-    _unary_operator: $ => choice($._spaced_unary_operator, $._unspaced_unary_operator),
-
+    unary_operator: $ => prec(PREC.unary, seq(choice('+', '-'), $._unary_operand)),
     not_operator: $ => prec(PREC.not, seq('~', $._unary_operand)),
 
     comparison_operator: $ => prec.left(PREC.compare, seq(
@@ -360,7 +344,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      $._unary_operator,
+      $.unary_operator,
     ),
     range: $ => prec.right(
       PREC.postfix,
