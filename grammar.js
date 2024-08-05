@@ -22,10 +22,7 @@ module.exports = grammar({
   extras: $ => [/\s/, $.comment, $.line_continuation],
   conflicts: $ => [
     [$._binary_operand, $._range_element],
-    [$._binary_operand, $.multioutput_variable],
-    [$._binary_operand, $._unary_operand],
-    [$._range_element, $._unary_operand],
-    [$._unary_operand, $.multioutput_variable],
+    [$._unary_operand, $._assignment_lhs],
     [$.range],
     [$._expression, $._additive_spaced_binary_operator],
   ],
@@ -56,20 +53,11 @@ module.exports = grammar({
 
     _binary_operand: $ => choice(
       $.binary_operator,
-      $.boolean,
       $.boolean_operator,
       $.cell,
       $.comparison_operator,
-      $.function_call,
-      $.identifier,
-      $.matrix,
-      $.not_operator,
-      $.number,
-      $.parenthesis,
-      $.postfix_operator,
       $.string,
-      $.struct,
-      $.unary_operator,
+      $._unary_operand,
     ),
     _expression: $ => choice($._binary_operand, $.range),
 
