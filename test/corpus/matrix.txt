@@ -160,13 +160,13 @@ Matrix: Expression With Transpose
     (row
       (binary_operator
         (binary_operator
-          (binary_operator
-            (number)
-            (postfix_operator
-              (identifier)))
-          (number))
-        (postfix_operator
-          (identifier)))
+          (number)
+          (postfix_operator
+            (identifier)))
+        (binary_operator
+          (number)
+          (postfix_operator
+            (identifier))))
       (binary_operator
         (postfix_operator
           (identifier))
