@@ -33,14 +33,10 @@ module.exports = grammar({
   rules: {
     source_file: $ => repeat(choice($._block, $.function_definition)),
 
-    _block: $ => prec.right(
-      repeat1(
-        seq(
-          choice($._expression, $._statement, $.function_definition),
-          $._end_of_line
-        )
-      )
-    ),
+    _block: $ => prec.right(repeat1(seq(
+      choice($._expression, $._statement, $.function_definition),
+      $._end_of_line
+    ))),
     block: $ => $._block,
 
     _statement: ($) => choice(
@@ -157,7 +153,8 @@ module.exports = grammar({
       )),
       prec.left(PREC.or, seq(
         field('left', $._expression), '||', field('right', $._expression)
-      ))),
+      ))
+    ),
 
     postfix_operator: $ => prec(
       PREC.postfix,
