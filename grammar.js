@@ -21,10 +21,11 @@ module.exports = grammar({
   name: 'scilab',
   extras: $ => [/\s/, $.comment, $.line_continuation],
   conflicts: $ => [
-    [$._base_expression, $._range_element],
-    [$._base_expression, $.multioutput_variable],
-    [$._base_expression, $._unary_operand],
+    [$._binary_operand, $._range_element],
+    [$._binary_operand, $.multioutput_variable],
+    [$._binary_operand, $._unary_operand],
     [$._range_element, $._unary_operand],
+    [$._unary_operand, $.multioutput_variable],
     [$.range],
   ],
 
@@ -56,7 +57,7 @@ module.exports = grammar({
       $.while_statement,
     ),
 
-    _base_expression: $ => choice(
+    _binary_operand: $ => choice(
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
@@ -73,7 +74,7 @@ module.exports = grammar({
       $.struct,
       $.unary_operator,
     ),
-    _expression: $ => choice($._base_expression, $.range),
+    _expression: $ => choice($._binary_operand, $.range),
 
     parenthesis: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
 
@@ -236,12 +237,10 @@ module.exports = grammar({
     },
 
     // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
-    _additive_spaced_binary_operator: $ => prec(
-      PREC.unary+1, seq(
-        field('left', $._unary_operand),
-        repeat1(' '), choice('+', '-'), repeat1(' '),
-        field('right', $._unary_operand),
-      ),
+    _additive_spaced_binary_operator: $ => seq(
+      field('left', $._binary_operand),
+      repeat1(' '), choice('+', '-'), repeat1(' '),
+      field('right', $._binary_operand),
     ),
     row: $ => {
       const sep = choice(',', ' ');
