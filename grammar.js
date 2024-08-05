@@ -60,20 +60,11 @@ module.exports = grammar({
 
     _binary_operand: $ => choice(
       $.binary_operator,
-      $.boolean,
       $.boolean_operator,
       $.cell,
       $.comparison_operator,
-      $.function_call,
-      $.identifier,
-      $.matrix,
-      $.not_operator,
-      $.number,
-      $.parenthesis,
-      $.postfix_operator,
       $.string,
-      $.struct,
-      $.unary_operator,
+      $._unary_operand,
     ),
     _expression: $ => choice($._binary_operand, $.range),
 
