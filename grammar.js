@@ -22,6 +22,7 @@ module.exports = grammar({
   extras: $ => [/\s/, $.comment, $.line_continuation],
   conflicts: $ => [
     [$._binary_operand, $._range_element],
+    [$._range_element, $._unary_operand],
     [$._unary_operand, $._assignment_lhs],
     [$.range],
     [$._expression, $._additive_spaced_binary_operator],
@@ -249,30 +250,29 @@ module.exports = grammar({
     // A(1) = B
     // A.b = B
     // [A, B, _] = C
+    _assignment_lhs: $ => choice(
+      $.identifier,
+      $.ignored_argument,
+      $.struct,
+      $.function_call
+    ),
+    // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
+    _multioutput_variable_single_sep: $ => {
+      const argument = field('argument', $._assignment_lhs);
+      return seq('[', argument, repeat(seq(choice(',',' '), argument)), ']');
+    },
+    _multioutput_variable_multiple_sep: $ => {
+      const argument = field('argument', $._assignment_lhs);
+      return seq('[', repeat(choice(argument, choice(',', ' '))), ']');
+    },
     assignment: $ => {
       const lhs = choice(
-        $.identifier,
-        $.ignored_argument,
-        $.function_call,
-        $.multioutput_variable,
-        $.struct,
+        $._assignment_lhs,
+        alias($._multioutput_variable_multiple_sep, $.multioutput_variable),
       );
       return seq(field('left', lhs), '=', field('right', $._expression));
     },
     _identifier_assignment: $ => seq($.identifier, '=', $._expression),
-
-    multioutput_variable: $ => {
-      const argument = field(
-        'argument',
-        choice(
-          $.identifier,
-          $.ignored_argument,
-          $.struct,
-          $.function_call
-        )
-      );
-      return seq('[', repeat(choice(argument, ',')), ']');
-    },
 
     ranging_operator: _ => ':',
 
@@ -379,9 +379,10 @@ module.exports = grammar({
 
     global_operator: $ => seq('global', repeat($.identifier)),
 
-    function_output: $ => seq(
-      field('output', choice($.identifier, $.multioutput_variable)), '='
-    ),
+    function_output: $ => seq(field('output', choice(
+      $.identifier,
+      alias($._multioutput_variable_single_sep, $.multioutput_variable)
+    )), '='),
     _function_arguments: $ => seq(
       '(', field('arguments', alias(optional($.function_arguments), $.arguments)), ')'
     ),
