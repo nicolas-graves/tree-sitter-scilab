@@ -22,10 +22,9 @@ module.exports = grammar({
   extras: $ => [/\s/, $.comment, $.line_continuation],
   conflicts: $ => [
     [$._binary_operand, $._range_element],
-    [$._binary_operand, $.multioutput_variable],
     [$._binary_operand, $._unary_operand],
     [$._range_element, $._unary_operand],
-    [$._unary_operand, $.multioutput_variable],
+    [$._unary_operand, $._assignment_lhs],
     [$.range],
     [$._expression, $._additive_spaced_binary_operator],
   ],
@@ -252,30 +251,28 @@ module.exports = grammar({
     // A(1) = B
     // A.b = B
     // [A, B, _] = C
-    assignment: $ => {
-      const lhs = choice(
-        $.identifier,
-        $.ignored_argument,
-        $.function_call,
-        $.multioutput_variable,
-        $.struct,
-      );
-      return seq(field('left', lhs), '=', field('right', $._expression));
-    },
-    _identifier_assignment: $ => seq($.identifier, '=', $._expression),
-
-    multioutput_variable: $ => {
-      const argument = field(
-        'argument',
-        choice(
+    _assignment_lhs: $ => choice(
           $.identifier,
           $.ignored_argument,
           $.struct,
           $.function_call
-        )
-      );
-      return seq('[', repeat(choice(argument, ',')), ']');
+    ),
+    // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
+    _multioutput_variable_single_sep: $ => {
+      const argument = field('argument', $._assignment_lhs);
+      return seq('[', argument, repeat(seq(optional(','), argument)), ']');
     },
+    _multioutput_variable_multiple_sep: $ => seq(
+      '[', repeat(choice(field('argument', $._assignment_lhs), ',')), ']'
+    ),
+    assignment: $ => {
+      const lhs = choice(
+        $._assignment_lhs,
+        alias($._multioutput_variable_multiple_sep, $.multioutput_variable),
+      );
+      return seq(field('left', lhs), '=', field('right', $._expression));
+    },
+    _identifier_assignment: $ => seq($.identifier, '=', $._expression),
 
     ranging_operator: _ => ':',
 
@@ -382,9 +379,10 @@ module.exports = grammar({
 
     global_operator: $ => seq('global', repeat($.identifier)),
 
-    function_output: $ => seq(
-      field('output', choice($.identifier, $.multioutput_variable)), '='
-    ),
+    function_output: $ => seq(field('output', choice(
+      $.identifier,
+      alias($._multioutput_variable_single_sep, $.multioutput_variable)
+    )), '='),
     _function_arguments: $ => seq(
       '(', field('arguments', alias(optional($.function_arguments), $.arguments)), ')'
     ),
