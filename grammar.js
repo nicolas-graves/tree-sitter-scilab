@@ -27,6 +27,7 @@ module.exports = grammar({
     [$._range_element, $._unary_operand],
     [$._unary_operand, $.multioutput_variable],
     [$.range],
+    [$._expression, $._additive_spaced_binary_operator],
   ],
 
   word: $ => $.identifier,
