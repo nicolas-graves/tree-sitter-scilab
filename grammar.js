@@ -23,7 +23,6 @@ module.exports = grammar({
   conflicts: $ => [
     [$._binary_operand, $._range_element],
     [$._binary_operand, $._unary_operand],
-    [$._range_element, $._unary_operand],
     [$._unary_operand, $._assignment_lhs],
     [$.range],
     [$._expression, $._additive_spaced_binary_operator],
@@ -292,17 +291,8 @@ module.exports = grammar({
 
     _range_element: $ => choice(
       $.binary_operator,
-      $.boolean,
-      $.function_call,
-      $.identifier,
-      $.matrix,
-      $.not_operator,
-      $.number,
-      $.parenthesis,
-      $.postfix_operator,
       $.string,
-      $.struct,
-      $.unary_operator,
+      $._unary_operand,
     ),
     range: $ => prec.right(
       PREC.postfix,
