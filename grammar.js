@@ -273,11 +273,9 @@ module.exports = grammar({
     },
     _identifier_assignment: $ => seq($.identifier, '=', $._expression),
 
-    ranging_operator: _ => ':',
-
     function_arguments: $ => {
       const argument = field('argument', choice(
-        $.ranging_operator,
+        alias(':', $.ranging_operator),
         $.ignored_argument,
         $._expression,
         alias($._identifier_assignment, $.assignment),
