@@ -7,11 +7,6 @@
 ((arguments ","? @parameter.outer._start . (_) @parameter.outer._end @parameter.inner . ))
 ((arguments (_) @parameter.outer._start @parameter.inner . "," @parameter.outer._end))
 
-(command) @call.outer
-(command (command_argument) @parameter.inner @parameter.outer)
-(command
-  (command_argument) @call.inner._start (command_argument)* @call.inner._end .)
-
 (if_statement
   (block) @conditional.inner) @conditional.outer
 (if_statement
@@ -21,24 +16,18 @@
   (else_clause
     (block) @conditional.inner))
 
-(switch_statement
+(select_statement
   (case_clause (block) @conditional.inner)) @conditional.outer
 
-(switch_statement
-  (otherwise_clause (block) @conditional.inner))
+(select_statement
+  (else_clause (block) @conditional.inner))
 
 (for_statement
   (block) @loop.inner) @loop.outer
 (while_statement
   (block) @loop.inner) @loop.outer
 
-(lambda
-  expression: (_) @function.inner) @function.outer
-
 (global_operator
-  (identifier) @parameter.inner)
-
-(persistent_operator
   (identifier) @parameter.inner)
 
 (function_definition
@@ -49,17 +38,13 @@
 ((multioutput_variable ","? @parameter.outer._start . (_) @parameter.outer._end @parameter.inner . ))
 ((multioutput_variable (_) @parameter.inner @parameter.outer._start . "," @parameter.outer._end))
 
-((function_arguments ","? @parameter.outer._start . (_) @parameter.inner._end @parameter.inner . ))
-((function_arguments (_) @parameter.outer._start @parameter.inner . "," @parameter.outer._end))
+((arguments ","? @parameter.outer._start . (_) @parameter.inner._end @parameter.inner . ))
+((arguments (_) @parameter.outer._start @parameter.inner . "," @parameter.outer._end))
 
 (try_statement
   (block) @conditional.inner) @conditional.outer
 (catch_clause
-  (identifier) @parameter.inner @parameter.outer)
-(catch_clause
   (block) @conditional.inner)
-
-(class_definition) @class.outer
 
 (number) @number.inner
 (_ (return_statement) @return.inner @return.outer)
@@ -72,22 +57,3 @@
 (assignment
   left: (_) @assignment.lhs
   (_) @assignment.rhs) @assignment.outer
-
-((superclasses "&"? @parameter.outer._start . (_) @parameter.inner @parameter.outer._end . ))
-((superclasses (_) @parameter.inner @parameter.outer._start . "&" @parameter.outer._end))
-
-(enum (identifier) @parameter.inner @parameter.outer)
-
-(property name: (_) @parameter.outer @parameter.inner)
-
-((enum ","? @parameter.outer._start . (_) @parameter.inner @parameter.outer._end . ))
-((enum (_) @parameter.inner @parameter.outer._start . "," @parameter.outer._end))
-
-((validation_functions ","? @paramenter.outer._start . (_) @parameter.inner @parameter.outer._end . ))
-((validation_functions (_) @paramter.outer._start @parameter.inner . "," @parameter.outer._end))
-
-((dimensions ","? @parameter.outer._start @_start . (_) @parameter.inner @parameter.outer._end . ))
-((dimensions (_) @parameter.outer._start @parameter.inner . "," @parameter.outer._end))
-
-((attributes ","? @parameter.outer._start . (_) @parameter.inner @parameter.outer._end . ))
-((attributes (_) @parameter.outer._start @parameter.inner . "," @parameter.outer._end))
