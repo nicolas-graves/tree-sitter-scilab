@@ -22,7 +22,6 @@ module.exports = grammar({
   extras: $ => [/\s/, $.comment, $.line_continuation],
   conflicts: $ => [
     [$._binary_operand, $._range_element],
-    [$._binary_operand, $._unary_operand],
     [$._unary_operand, $._assignment_lhs],
     [$.range],
     [$._expression, $._additive_spaced_binary_operator],
