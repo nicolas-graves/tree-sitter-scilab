@@ -72,8 +72,7 @@ elseif other,
     2
 elseif again;
     3
-elseif next then
-    4
+elseif next then 4
 elseif again then,
     5
 elseif last then;

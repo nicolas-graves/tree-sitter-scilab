@@ -310,7 +310,7 @@ module.exports = grammar({
       'elseif',
       field('condition', $._expression),
       optional('then'),
-      $._end_of_line,
+      optional($._end_of_line),
       optional($.block)
     ),
     else_clause: ($) => seq('else', optional($._end_of_line), optional($.block)),
