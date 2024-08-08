@@ -4,21 +4,15 @@
   (if_statement)
   (for_statement)
   (while_statement)
-  (switch_statement)
+  (select_statement)
   (try_statement)
   (function_definition)
-  (class_definition)
-  (enumeration)
-  (events)
-  (methods)
-  (properties)
 ] @indent.begin
 
 [
   "elseif"
   "else"
   "case"
-  "otherwise"
   "catch"
 ] @indent.branch
 

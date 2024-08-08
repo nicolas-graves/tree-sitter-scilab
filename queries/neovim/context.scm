@@ -22,13 +22,9 @@
   (block (_) @context.end)
 ) @context
 
-(switch_statement) @context
+(select_statement) @context
 
 (case_clause
-  (block (_) @context.end)
-) @context
-
-(otherwise_clause
   (block (_) @context.end)
 ) @context
 

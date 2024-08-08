@@ -1,20 +1,8 @@
-; Includes
-
-((command_name) @include
-  (#eq? @include "import"))
-
 ; Keywords
 
 [
-  "arguments"
-  "classdef"
   "end"
-  "enumeration"
-  "events"
   "global"
-  "methods"
-  "persistent"
-  "properties"
 ] @keyword
 
 ; Conditionals
@@ -22,14 +10,13 @@
 (if_statement [ "if" "end" ] @conditional)
 (elseif_clause "elseif" @conditional)
 (else_clause "else" @conditional)
-(switch_statement [ "switch" "end" ] @conditional)
+(select_statement [ "select" "end" ] @conditional)
 (case_clause "case" @conditional)
-(otherwise_clause "otherwise" @conditional)
 (break_statement) @conditional
 
 ; Repeats
 
-(for_statement [ "for" "parfor" "end" ] @repeat)
+(for_statement [ "for" "end" ] @repeat)
 (while_statement [ "while" "end" ] @repeat)
 (continue_statement) @repeat
 
@@ -44,28 +31,22 @@
 
 ; Constants
 
-(events (identifier) @constant)
-(attribute (identifier) @constant)
-
-"~" @constant.builtin
+"_" @constant.builtin
 
 ; Fields/Properties
 
-(field_expression field: (identifier) @field)
+(struct "." @operator)
 
-(superclass "." (identifier) @property)
+(struct . [(function_call
+             name: (identifier) @variable)
+           (identifier) @variable])
 
-(property_name "." (identifier) @property)
-
-(property name: (identifier) @property)
+(struct
+  [(function_call
+     name: (identifier) @field)
+   (identifier) @field])
 
 ; Types
-
-(class_definition name: (identifier) @type)
-
-(attributes (identifier) @constant)
-
-(enum . (identifier) @type)
 
 ((identifier) @type
   (#lua-match? @type "^_*[A-Z][a-zA-Z0-9_]+$"))
@@ -77,23 +58,14 @@
   name: (identifier) @function
   [ "end" "endfunction" ]? @keyword.function)
 
-(function_signature name: (identifier) @function)
-
 (function_call
   name: (identifier) @function.call)
-
-(handle_operator (identifier) @function)
-
-(validation_functions (identifier) @function)
-
-(command (command_name) @function.call)
-(command_argument) @parameter
 
 (return_statement) @keyword.return
 
 ; Parameters
 
-(function_arguments (identifier) @parameter)
+(arguments (identifier) @parameter)
 
 ; Punctuation
 
@@ -105,23 +77,25 @@
 
 [
   "+"
-  ".+"
   "-"
-  ".*"
   "*"
   ".*"
+  ".*."
+  "*."
   "/"
   "./"
+  "./."
+  "/."
   "\\"
   ".\\"
+  ".\\."
+  "\\."
   "^"
   ".^"
   "'"
   ".'"
   "|"
   "&"
-  "?"
-  "@"
   "<"
   "<="
   ">"
@@ -132,13 +106,14 @@
   "&&"
   "||"
   ":"
+  "~"
 ] @operator
 
 ; Literals
 
 (string) @string
 
-(escape_sequence) @string.escape
+(special_escape_sequence) @string.escape
 (formatting_sequence) @string.special
 
 (number) @number

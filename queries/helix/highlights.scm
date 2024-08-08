@@ -1,21 +1,17 @@
 ; Constants
 
-(events (identifier) @constant)
-(attribute (identifier) @constant)
-
-"~" @constant.builtin
+"_" @constant.builtin
 
 ; Fields/Properties
 
-(superclass "." (identifier) @variable.other.member)
-(property_name "." (identifier) @variable.other.member)
-(property name: (identifier) @variable.other.member)
-
-; Types
-
-(class_definition name: (identifier) @keyword.storage.type)
-(attributes (identifier) @constant)
-(enum . (identifier) @type.enum.variant)
+(struct "." @operator)
+(struct . [(function_call
+             name: (identifier) @variable)
+           (identifier) @variable])
+(struct
+  [(function_call
+     name: (identifier) @field)
+   (identifier) @field])
 
 ; Functions
 
@@ -24,12 +20,7 @@
   name: (identifier) @function
   [ "end" "endfunction" ]? @keyword.function)
 
-(function_signature name: (identifier) @function)
 (function_call name: (identifier) @function)
-(handle_operator (identifier) @function)
-(validation_functions (identifier) @function)
-(command (command_name) @function.macro)
-(command_argument) @string
 (return_statement) @keyword.control.return
 
 ; Assignments
@@ -39,21 +30,20 @@
 
 ; Parameters
 
-(function_arguments (identifier) @variable.parameter)
+(arguments (identifier) @variable.parameter)
 
 ; Conditionals
 
 (if_statement [ "if" "end" ] @keyword.control.conditional)
 (elseif_clause "elseif" @keyword.control.conditional)
 (else_clause "else" @keyword.control.conditional)
-(switch_statement [ "switch" "end" ] @keyword.control.conditional)
+(select_statement [ "select" "end" ] @keyword.control.conditional)
 (case_clause "case" @keyword.control.conditional)
-(otherwise_clause "otherwise" @keyword.control.conditional)
 (break_statement) @keyword.control.conditional
 
 ; Repeats
 
-(for_statement [ "for" "parfor" "end" ] @keyword.control.repeat)
+(for_statement [ "for" "end" ] @keyword.control.repeat)
 (while_statement [ "while" "end" ] @keyword.control.repeat)
 (continue_statement) @keyword.control.repeat
 
@@ -69,7 +59,7 @@
 
 ; Literals
 
-(escape_sequence) @constant.character.escape
+(special_escape_sequence) @constant.character.escape
 (formatting_sequence) @constant.character.escape
 (string) @string
 (number) @constant.numeric.float
@@ -84,23 +74,25 @@
 
 [
   "+"
-  ".+"
   "-"
-  ".*"
   "*"
   ".*"
+  ".*."
+  "*."
   "/"
   "./"
+  "./."
+  "/."
   "\\"
   ".\\"
+  ".\\."
+  "\\."
   "^"
   ".^"
   "'"
   ".'"
   "|"
   "&"
-  "?"
-  "@"
   "<"
   "<="
   ">"
@@ -111,18 +103,12 @@
   "&&"
   "||"
   ":"
+  "~"
 ] @operator
 
 ; Keywords
 
-"classdef" @keyword.storage.type
 [
-  "arguments"
   "end"
-  "enumeration"
-  "events"
   "global"
-  "methods"
-  "persistent"
-  "properties"
 ] @keyword
