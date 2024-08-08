@@ -140,15 +140,13 @@ module.exports = grammar({
       )),
       prec.left(PREC.or, seq(
         field('left', $._expression), '||', field('right', $._expression)
-      ))),
-
-    postfix_operator: $ => prec(
-      PREC.postfix,
-      seq(
-        field('operand', choice($.cell, $._unary_operand)),
-        choice(".'", "'"),
-      ),
+      ))
     ),
+
+    postfix_operator: $ => prec(PREC.postfix, seq(
+      field('operand', choice($.cell, $._unary_operand)),
+      choice(".'", "'"),
+    )),
 
     special_escape_sequence: $ => token.immediate(
       prec(1, seq('\\', choice('\\', 'n', 'r', 't')))
