@@ -251,19 +251,20 @@ module.exports = grammar({
     // A.b = B
     // [A, B, _] = C
     _assignment_lhs: $ => choice(
-          $.identifier,
-          $.ignored_argument,
-          $.struct,
-          $.function_call
+      $.identifier,
+      $.ignored_argument,
+      $.struct,
+      $.function_call
     ),
     // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
     _multioutput_variable_single_sep: $ => {
       const argument = field('argument', $._assignment_lhs);
-      return seq('[', argument, repeat(seq(optional(','), argument)), ']');
+      return seq('[', argument, repeat(seq(choice(',',' '), argument)), ']');
     },
-    _multioutput_variable_multiple_sep: $ => seq(
-      '[', repeat(choice(field('argument', $._assignment_lhs), ',')), ']'
-    ),
+    _multioutput_variable_multiple_sep: $ => {
+      const argument = field('argument', $._assignment_lhs);
+      return seq('[', repeat(choice(argument, choice(',', ' '))), ']');
+    },
     assignment: $ => {
       const lhs = choice(
         $._assignment_lhs,
