@@ -296,15 +296,18 @@ module.exports = grammar({
       $.string,
       $._unary_operand,
     ),
-    range: $ => prec.right(
-      PREC.postfix,
-      seq(
-        $._range_element,
-        ':',
-        $._range_element,
-        optional(seq(':', $._range_element))
-      ),
-    ),
+    range: $ => {
+      const operator = choice(':', /\s:/, /:\s/, /\s:\s/);
+      return prec.right(
+        PREC.postfix,
+        seq(
+          $._range_element,
+          operator,
+          $._range_element,
+          optional(seq(operator, $._range_element))
+        ),
+      );
+    },
 
     return_statement: _ => 'return',
     continue_statement: _ => 'continue',

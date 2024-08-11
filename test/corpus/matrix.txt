@@ -201,3 +201,21 @@ Matrix: Meaning of Spaces
       (binary_operator
         (number)
         (number)))))
+
+================================================================================
+Matrix: With Range With Spaces
+================================================================================
+
+[ a+1 : 2 : 10 ]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (matrix
+    (row
+      (range
+        (binary_operator
+          (identifier)
+          (number))
+        (number)
+        (number)))))

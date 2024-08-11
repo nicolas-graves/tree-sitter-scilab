@@ -66,11 +66,16 @@ Range: Variables
 
 a:b
 a:b:c
+a : b : c
 
 --------------------------------------------------------------------------------
 
 (source_file
   (range
+    (identifier)
+    (identifier))
+  (range
+    (identifier)
     (identifier)
     (identifier))
   (range
