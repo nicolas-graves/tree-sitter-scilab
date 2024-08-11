@@ -26,6 +26,7 @@ module.exports = grammar({
     [$._unary_operand, $.function_arguments],
     [$.range],
     [$._expression, $._additive_spaced_binary_operator],
+    [$.matrix, $._multioutput_variable_multiple_sep],
   ],
 
   word: $ => $.identifier,
@@ -238,7 +239,7 @@ module.exports = grammar({
     },
     matrix: $ => {
       const end_of_row = token.immediate(repeat1(choice(';', '\n', '\r')));
-      return seq('[', repeat(seq($.row, end_of_row)), optional($.row), ']',);
+      return seq('[', optional(/\s/), repeat(seq($.row, end_of_row)), optional($.row), ']',);
     },
     cell: $ => {
       const end_of_row = token.immediate(repeat1(choice(';', '\n', '\r')));
