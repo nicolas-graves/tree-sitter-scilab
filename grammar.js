@@ -21,8 +21,8 @@ module.exports = grammar({
   name: 'scilab',
   extras: $ => [/\s/, $.comment, $.line_continuation],
   conflicts: $ => [
-    [$._base_expression, $._range_element],
-    [$._base_expression, $.multioutput_variable],
+    [$._binary_operand, $._range_element],
+    [$._binary_operand, $.multioutput_variable],
     [$.range],
   ],
 
@@ -50,7 +50,7 @@ module.exports = grammar({
       $.while_statement,
     ),
 
-    _base_expression: $ => choice(
+    _binary_operand: $ => choice(
       $.binary_operator,
       $.boolean,
       $.boolean_operator,
@@ -67,7 +67,7 @@ module.exports = grammar({
       $.struct,
       $.unary_operator,
     ),
-    _expression: $ => choice($._base_expression, $.range),
+    _expression: $ => choice($._binary_operand, $.range),
 
     parenthesis: $ => prec(PREC.parentheses, seq('(', $._expression, ')')),
 
@@ -108,7 +108,7 @@ module.exports = grammar({
         [prec.left, '&', PREC.bitwise_and],
       ]
 
-      const binary_expression = $._base_expression;
+      const binary_expression = $._binary_operand;
 
       return choice(
         ...table.map(([fn, operator, precedence]) =>
