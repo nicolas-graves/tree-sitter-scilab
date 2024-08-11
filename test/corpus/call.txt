@@ -45,15 +45,29 @@ A(1, :)
 --------------------------------------------------------------------------------
 
 (source_file
-    (function_call
-      (identifier)
-      (arguments
-        (ranging_operator)))
-    (function_call
-      (identifier)
-      (arguments
-        (number)
-        (ranging_operator))))
+  (function_call
+    (identifier)
+    (arguments
+      (ranging_operator)))
+  (function_call
+    (identifier)
+    (arguments
+      (number)
+      (ranging_operator))))
+
+================================================================================
+Function Call: With Last Index
+================================================================================
+
+A($)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_call
+    (identifier)
+    (arguments
+      (last_index))))
 
 ================================================================================
 Function Call: Nested Calls

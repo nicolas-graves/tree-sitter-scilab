@@ -23,6 +23,7 @@ module.exports = grammar({
   conflicts: $ => [
     [$._binary_operand, $._range_element],
     [$._unary_operand, $._assignment_lhs],
+    [$._unary_operand, $.function_arguments],
     [$.range],
     [$._expression, $._additive_spaced_binary_operator],
   ],
@@ -121,6 +122,7 @@ module.exports = grammar({
         $.boolean,
         $.function_call,
         $.identifier,
+        $.last_index,
         $.matrix,
         $.not_operator,
         $.number,
@@ -277,6 +279,7 @@ module.exports = grammar({
       const argument = field('argument', choice(
         alias(':', $.ranging_operator),
         $.ignored_argument,
+        $.last_index,
         $._expression,
         alias($._identifier_assignment, $.assignment),
       ));
@@ -392,6 +395,8 @@ module.exports = grammar({
       optional($.catch_clause),
       'end',
     ),
+
+    last_index: _ => '$',
 
     number: _ => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
 
