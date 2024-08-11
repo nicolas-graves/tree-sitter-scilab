@@ -130,28 +130,20 @@ module.exports = grammar({
       )
     },
 
-    unary_operator: $ => prec(
-      PREC.unary,
-      seq(
-        choice('+', '-'),
-        field(
-          'operand',
-          choice(
-            $.boolean,
-            $.cell,
-            $.function_call,
-            $.identifier,
-            $.matrix,
-            $.not_operator,
-            $.number,
-            $.parenthesis,
-            $.postfix_operator,
-            $.struct,
-            $.unary_operator,
-          ),
-        ),
-      ),
-    ),
+    _unary_operand: $ => field(
+      'operand', choice(
+        $.boolean,
+        $.function_call,
+        $.identifier,
+        $.matrix,
+        $.not_operator,
+        $.number,
+        $.parenthesis,
+        $.postfix_operator,
+        $.struct,
+        $.unary_operator,
+      )),
+    unary_operator: $ => prec(PREC.unary, seq(choice('+', '-'), $._unary_operand)),
 
     not_operator: $ => prec(PREC.not, seq('~', $._expression)),
 
