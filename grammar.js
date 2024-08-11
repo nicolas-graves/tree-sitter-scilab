@@ -287,9 +287,8 @@ module.exports = grammar({
       $._function_arguments
     )),
 
-    // Unary operators cannot bind stronger in this case, lest the world falls apart.
     _range_element: $ => choice(
-      prec.dynamic(1, $.binary_operator),
+      $.binary_operator,
       $.boolean,
       $.function_call,
       $.identifier,
@@ -300,7 +299,7 @@ module.exports = grammar({
       $.postfix_operator,
       $.string,
       $.struct,
-      prec.dynamic(-1, $.unary_operator)
+      $.unary_operator,
     ),
     range: $ => prec.right(
       PREC.postfix,
