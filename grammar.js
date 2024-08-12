@@ -268,18 +268,20 @@ module.exports = grammar({
       const argument = field('argument', $._assignment_lhs);
       return seq('[', repeat(choice(argument, choice(',', /\s/))), ']');
     },
+    ranging_operator: _ => ':',
     assignment: $ => {
       const lhs = choice(
         $._assignment_lhs,
         alias($._multioutput_variable_multiple_sep, $.multioutput_variable),
       );
-      return seq(field('left', lhs), '=', field('right', $._expression));
+      const rhs = choice($._expression, $.ranging_operator);
+      return seq(field('left', lhs), '=', field('right', rhs));
     },
     _identifier_assignment: $ => seq($.identifier, '=', $._expression),
 
     function_arguments: $ => {
       const argument = field('argument', choice(
-        alias(':', $.ranging_operator),
+        $.ranging_operator,
         $.ignored_argument,
         $.last_index,
         $._expression,
