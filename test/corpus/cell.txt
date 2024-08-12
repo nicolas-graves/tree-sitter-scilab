@@ -95,3 +95,29 @@ Cell: Extra delimiters
       (number)
       (number)
       (number))))
+
+================================================================================
+Cell: Meaning of Spaces
+================================================================================
+
+{ -  1 1+1 +1 - 2 -2 3+ 4 }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (cell
+    (row
+      (unary_operator
+        (number))
+      (binary_operator
+        (number)
+        (number))
+      (binary_operator
+        (unary_operator
+          (number))
+        (number))
+      (unary_operator
+        (number))
+      (binary_operator
+        (number)
+        (number)))))
