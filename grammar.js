@@ -36,7 +36,7 @@ module.exports = grammar({
 
     _block: $ => prec.right(repeat1(seq(
       choice($._expression, $._statement, $.function_definition),
-      $._end_of_line
+      repeat1($._end_of_line),
     ))),
     block: $ => $._block,
 
