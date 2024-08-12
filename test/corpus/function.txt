@@ -82,7 +82,7 @@ end
 Function Declaration: Args, Multiple Outputs
 ================================================================================
 
-function [a, b] = c(a, b)
+function [ a , b ] = c(a, b)
     1
 end
 

@@ -232,7 +232,8 @@ module.exports = grammar({
       field('right', $._binary_operand),
     ),
     row: $ => {
-      const sep = choice(',', /\s/);
+      const comma = choice(',', /\s+,/);
+      const sep = choice(prec(1, comma), /\s/);
       const argument = field('argument', choice($._expression, alias(
         $._additive_spaced_binary_operator, $.binary_operator
       )));
@@ -262,7 +263,9 @@ module.exports = grammar({
     // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
     _multioutput_variable_single_sep: $ => {
       const argument = field('argument', $._assignment_lhs);
-      return seq('[', argument, repeat(seq(choice(',', /\s/), argument)), ']');
+      const comma = choice(',', /\s+,/);
+      const sep = choice(prec(1, comma), /\s/);
+      return seq('[', argument, repeat(seq(sep, argument)), optional(/\s/), ']');
     },
     _multioutput_variable_multiple_sep: $ => {
       const argument = field('argument', $._assignment_lhs);

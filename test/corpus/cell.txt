@@ -101,6 +101,7 @@ Cell: Meaning of Spaces
 ================================================================================
 
 { -  1 1+1 +1 - 2 -2 3+ 4 }
+A = { 1  ,  2,  3 }
 
 --------------------------------------------------------------------------------
 
@@ -119,5 +120,12 @@ Cell: Meaning of Spaces
       (unary_operator
         (number))
       (binary_operator
+        (number)
+        (number))))
+  (assignment
+    (identifier)
+    (cell
+      (row
+        (number)
         (number)
         (number)))))
