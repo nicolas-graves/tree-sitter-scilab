@@ -40,6 +40,8 @@ a .^ b;
 a | b;
 a & b;
 
+%pi + %nan
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -150,7 +152,10 @@ a & b;
     (identifier))
   (binary_operator
     (identifier)
-    (identifier)))
+    (identifier))
+  (binary_operator
+    (constant)
+    (constant)))
 
 ================================================================================
 Binary Expressions: Associativity

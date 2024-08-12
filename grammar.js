@@ -121,6 +121,7 @@ module.exports = grammar({
     _unary_operand: $ => field(
       'operand', choice(
         $.boolean,
+        $.constant,
         $.function_call,
         $.identifier,
         $.last_index,
@@ -400,13 +401,30 @@ module.exports = grammar({
       'end',
     ),
 
+    constant: _ => token.immediate(prec(1, choice(
+      'SCI',
+      'WSCI',
+      'SCIHOME',
+      'TMPDIR',
+      'home',
+      '%chars',
+      '%e',
+      '%eps',
+      '%i',
+      '%inf',
+      '%nan',
+      '%pi',
+      '%s',
+      '%z',
+    ))),
+
     last_index: _ => '$',
 
     number: _ => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
 
     boolean: _ => choice('%f', '%F', '%t', '%T'),
 
-    identifier: _ => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    identifier: _ => /[a-zA-Z_%][a-zA-Z0-9_]*/,
 
     _end_of_line: _ => choice(';', '\n', '\r', ','),
   },
