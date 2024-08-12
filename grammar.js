@@ -102,20 +102,13 @@ module.exports = grammar({
         [prec.left, '&', PREC.bitwise_and],
       ]
 
-      const binary_expression = $._binary_operand;
-
-      return choice(
-        ...table.map(([fn, operator, precedence]) =>
-          fn(
-            precedence,
-            seq(
-              field('left', $._binary_operand),
-              operator,
-              field('right', $._binary_operand),
-            )
-          )
-        )
-      )
+      return choice(...table.map(([fn, operator, precedence]) =>
+        fn(precedence, seq(
+          field('left', $._binary_operand),
+          operator,
+          field('right', $._binary_operand),
+        ))
+      ));
     },
 
     _unary_operand: $ => field(
@@ -250,15 +243,11 @@ module.exports = grammar({
 
     ignored_argument: _ => prec(PREC.not+1, '_'),
 
-    // A = B
-    // A(1) = B
-    // A.b = B
-    // [A, B, _] = C
     _assignment_lhs: $ => choice(
-      $.identifier,
-      $.ignored_argument,
-      $.struct,
-      $.function_call
+      $.identifier,  // A = B
+      $.ignored_argument,  // _ = B
+      $.struct,  // A.b = B
+      $.function_call,  // A(1) = B
     ),
     // Workaround for https://github.com/tree-sitter/tree-sitter/issues/2299
     _multioutput_variable_single_sep: $ => {
