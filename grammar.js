@@ -136,7 +136,7 @@ module.exports = grammar({
     not_operator: $ => prec(PREC.not, seq('~', $._unary_operand)),
 
     comparison_operator: $ => prec.left(PREC.compare, seq(
-      $._expression, choice('<', '<=', '==', '~=', '>=', '>'), $._expression
+      $._expression, choice('<', '<=', '==', '~=', '<>', '>=', '>'), $._expression
     )),
 
     boolean_operator: $ => choice(
