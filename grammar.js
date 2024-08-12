@@ -421,7 +421,7 @@ module.exports = grammar({
 
     last_index: _ => '$',
 
-    number: _ => /(\d+|\d+\.\d*|\.\d+)([eE][+-]?\d+)?[ij]?/,
+    number: _ => /(\d+|\d+\.\d*|\.\d+)([dDeE][+-]?\d+)?[ij]?/,
 
     boolean: _ => choice('%f', '%F', '%t', '%T'),
 
