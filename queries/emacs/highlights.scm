@@ -77,7 +77,7 @@
 ; Repeats
 
 (for_statement [ "for" "end" ] @keyword)
-(while_statement [ "while" "end" ] @keyword)
+(while_statement [ "while" "do" "then" "end" ] @keyword)
 (continue_statement) @keyword
 
 ; Exceptions

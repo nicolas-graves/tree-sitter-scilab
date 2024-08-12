@@ -17,7 +17,7 @@
 ; Repeats
 
 (for_statement [ "for" "end" ] @repeat)
-(while_statement [ "while" "end" ] @repeat)
+(while_statement [ "while" "do" "then" "end" ] @repeat)
 (continue_statement) @repeat
 
 ; Exceptions

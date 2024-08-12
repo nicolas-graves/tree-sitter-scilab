@@ -44,7 +44,7 @@
 ; Repeats
 
 (for_statement [ "for" "end" ] @keyword.control.repeat)
-(while_statement [ "while" "end" ] @keyword.control.repeat)
+(while_statement [ "while" "do" "then" "end" ] @keyword.control.repeat)
 (continue_statement) @keyword.control.repeat
 
 ; Exceptions
