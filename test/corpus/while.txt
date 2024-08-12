@@ -15,3 +15,63 @@ end
         (identifier))
     (block
      (continue_statement))))
+
+================================================================================
+While Statement With Do
+================================================================================
+
+while 1 < b do
+   continue
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (while_statement
+    (comparison_operator
+        (number)
+        (identifier))
+    (block
+     (continue_statement))))
+
+================================================================================
+While Statement With Then
+================================================================================
+
+while 1 < b then
+   continue
+end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (while_statement
+    (comparison_operator
+        (number)
+        (identifier))
+    (block
+     (continue_statement))))
+
+================================================================================
+While Statement: Oneliners
+================================================================================
+
+while expr ,continue, end
+while expr do continue, end
+while expr then continue, end
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (while_statement
+    (identifier)
+    (block
+     (continue_statement)))
+  (while_statement
+    (identifier)
+    (block
+     (continue_statement)))
+  (while_statement
+    (identifier)
+    (block
+     (continue_statement))))

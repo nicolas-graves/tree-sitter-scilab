@@ -345,7 +345,8 @@ module.exports = grammar({
     while_statement: $ => seq(
       'while',
       field('condition', $._expression),
-      $._end_of_line,
+      optional(choice('do', 'then')),
+      optional($._end_of_line),
       optional($.block),
       'end',
     ),
