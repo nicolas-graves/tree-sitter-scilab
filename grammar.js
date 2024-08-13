@@ -303,7 +303,7 @@ module.exports = grammar({
       $._unary_operand,
     ),
     range: $ => {
-      const operator = choice(':', /\s:/, /:\s/, /\s:\s/);
+      const operator = choice(':', /\s+:/, /:\s+/, /\s+:\s+/);
       return prec.right(
         PREC.postfix,
         seq(
