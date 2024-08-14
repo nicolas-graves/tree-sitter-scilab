@@ -253,7 +253,7 @@ module.exports = grammar({
       const argument = field('argument', $._assignment_lhs);
       const comma = choice(',', /\s+,/);
       const sep = choice(prec(1, comma), /\s/);
-      return seq('[', argument, repeat(seq(sep, argument)), optional(/\s/), ']');
+      return seq('[', optional(argument), repeat(seq(sep, argument)), optional(/\s/), ']');
     },
     _multioutput_variable_multiple_sep: $ => {
       const argument = field('argument', $._assignment_lhs);

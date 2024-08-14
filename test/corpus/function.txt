@@ -203,3 +203,29 @@ end
         (binary_operator
           (identifier)
           (number))))))
+
+================================================================================
+Function Declaration: Empty Function Outputs
+================================================================================
+
+function []=message(str)
+    printf(str+"\n")
+endfunction
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_definition
+    (function_output
+      (multioutput_variable))
+    (identifier)
+    (arguments
+      (identifier))
+    (block
+      (function_call
+        (identifier)
+        (arguments
+          (binary_operator
+            (identifier)
+            (string
+              (special_escape_sequence))))))))
