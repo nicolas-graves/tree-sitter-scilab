@@ -32,11 +32,11 @@ module.exports = grammar({
   word: $ => $.identifier,
 
   rules: {
-    source_file: $ => repeat(choice($._block, $.function_definition)),
+    source_file: $ => repeat($._block),
 
     _block: $ => prec.right(repeat1(seq(
       choice($._expression, $._statement, $.function_definition),
-      repeat1($._end_of_line),
+     repeat($._end_of_line),
     ))),
     block: $ => $._block,
 
