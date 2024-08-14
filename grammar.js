@@ -46,7 +46,6 @@ module.exports = grammar({
       $.continue_statement,
       $.return_statement,
       $.for_statement,
-      $.global_operator,
       $.if_statement,
       $.select_statement,
       $.try_statement,
@@ -367,8 +366,6 @@ module.exports = grammar({
       repeat1(seq($._struct_element, '.')),
       $._struct_element
     ),
-
-    global_operator: $ => seq('global', repeat($.identifier)),
 
     function_output: $ => seq(field('output', choice(
       $.identifier,
