@@ -14,4 +14,3 @@
 (multioutput_variable (identifier) @definition.var)
 
 (iterator . (identifier) @definition.var)
-(global_operator (identifier) @definition.var)

@@ -29,9 +29,6 @@
 (while_statement
   (block) @loop.inner) @loop.outer
 
-(global_operator
-  (identifier) @parameter.inner)
-
 (function_definition
   (block) @function.inner) @function.outer
 

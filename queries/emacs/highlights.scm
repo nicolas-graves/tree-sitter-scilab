@@ -149,5 +149,4 @@
 
 [
   "end"
-  "global"
 ] @keyword

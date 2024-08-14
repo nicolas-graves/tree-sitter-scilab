@@ -2,7 +2,6 @@
 
 [
   "end"
-  "global"
 ] @keyword
 
 ; Conditionals

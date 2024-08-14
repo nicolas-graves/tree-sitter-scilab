@@ -10,6 +10,5 @@
 (assignment (multioutput_variable (_) @local.definition))
 
 (iterator . (identifier) @local.definition)
-(global_operator (identifier) @local.definition)
 
 (identifier) @local.reference
