@@ -393,7 +393,7 @@ module.exports = grammar({
       'end',
     ),
 
-    constant: _ => token.immediate(prec(1, choice(
+    constant: _ => token.immediate(choice(
       'SCI',
       'WSCI',
       'SCIHOME',
@@ -408,7 +408,7 @@ module.exports = grammar({
       '%pi',
       '%s',
       '%z',
-    ))),
+    )),
 
     last_index: _ => '$',
 
