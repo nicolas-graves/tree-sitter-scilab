@@ -31,6 +31,13 @@ Assignment: Multiple Output
 [a b c d] = function
 [a,b,c,d] = function
 
+[..
+a,..
+b,..
+c,..
+d..
+] = function
+
 [a _ c d] = function
 [a,b,_,d] = function
 
@@ -50,6 +57,18 @@ Assignment: Multiple Output
       (identifier)
       (identifier)
       (identifier))
+    (identifier))
+  (assignment
+    (multioutput_variable
+      (line_continuation)
+      (identifier)
+      (line_continuation)
+      (identifier)
+      (line_continuation)
+      (identifier)
+      (line_continuation)
+      (identifier)
+      (line_continuation))
     (identifier))
   (assignment
     (multioutput_variable
