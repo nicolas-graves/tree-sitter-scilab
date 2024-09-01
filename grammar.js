@@ -278,7 +278,7 @@ module.exports = grammar({
         $._expression,
         alias($._identifier_assignment, $.assignment),
       ));
-      return seq(argument, repeat(seq(',', argument)));
+      return seq(argument, repeat(seq(',', argument)), optional(','));
     },
     function_call: $ => prec.right(PREC.call, seq(
       field('name', choice($.identifier, $.function_call)),
