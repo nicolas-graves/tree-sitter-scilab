@@ -1,4 +1,6 @@
-Work in progress
+# Scilab grammar for tree-sitter
+
+This is a tree-sitter parser for the [Scilab](https://www.scilab.org/) programming language. It doesn't try to be "correct" in the sense that it is close to what Scilab executes.
 
 # Known Issues
 
@@ -31,12 +33,17 @@ This repository is restrained to a version of Scilab that does not try to parse 
 
 ## Other known issues
 
-Some rules in `grammar.js` are not at their right place due to [this upstream issue](https://github.com/tree-sitter/tree-sitter/issues/2299) which should be fixed at tree-sitter 1.0 release :
+Some rules in `grammar.js` are not at their right place due to [this upstream issue](https://github.com/tree-sitter/tree-sitter/issues/2299) which should be fixed at tree-sitter 1.0 release.
 
-Because it's not possible to both alias properly and define a `spaced_binary_operator` inside the `row` rule, it's currently not possible to easily parse the following example:
+Because it's not possible to both alias properly and define a `spaced_binary_operator` inside the `row` rule, it's currently not possible to easily parse the following examples:
 
 ``` scilab
 [ a * b , c ^ d ]
+[ a ,b ] = meshgrid(1:2, 1:2);
 ```
 
-Until this is fixed upstream, this will remain unfixed.
+Until this is fixed in tree-sitter upstream, this will remain unfixed.
+
+# Acknowlegment
+
+This project wouldn't have been possible without [tree-sitter-matlab](https://github.com/acristoffers/tree-sitter-matlab) or Scilab itself, kudos to their developpers.
