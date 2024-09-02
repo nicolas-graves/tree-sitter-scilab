@@ -1,0 +1,45 @@
+================================================================================
+Known Issue: Spaced Binary Operator Inside Matrix
+================================================================================
+
+[ a * b , c ^ d ]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (matrix
+    (row
+      (binary_operator
+        (identifier)
+        (ERROR)
+        (identifier))
+      (binary_operator
+        (identifier)
+        (ERROR)
+        (identifier)))))
+
+================================================================================
+Known Issue: Multioutput variable read as matrix when space
+================================================================================
+
+[ a ,b,c,d] = function()
+[a ,b,c,d] = function()
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (assignment
+    (multioutput_variable
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier))
+    (function_call
+      (identifier)))
+  (matrix
+    (row
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)))
+  (ERROR))
