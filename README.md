@@ -1,6 +1,6 @@
 # Scilab grammar for tree-sitter
 
-This is a tree-sitter parser for the [Scilab](https://www.scilab.org/) programming language. It doesn't try to be "correct" in the sense that it is close to what Scilab executes.
+This is a tree-sitter parser for the [Scilab](https://www.scilab.org/) programming language. It doesn't try to be "correct" or close to what Scilab executes.
 
 # Known Issues
 
