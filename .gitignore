@@ -3,3 +3,7 @@ package-lock.json
 node_modules
 src
 scilab
+target
+bindings
+binding.gyp
+*.patch
