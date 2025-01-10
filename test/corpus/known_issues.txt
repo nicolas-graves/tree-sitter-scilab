@@ -43,3 +43,21 @@ Known Issue: Multioutput variable read as matrix when space
       (identifier)
       (identifier)))
   (ERROR))
+
+
+================================================================================
+Known Issue: Comments in functions
+================================================================================
+
+strstr(matString(:,1),"//")
+
+--------------------------------------------------------------------------------
+(source_file
+  (identifier)
+  (ERROR
+    (function_call
+      (identifier)
+      (arguments
+        (ranging_operator)
+        (number)))
+    (comment)))
